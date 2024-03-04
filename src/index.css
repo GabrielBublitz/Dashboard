@@ -1,0 +1,15 @@
+@import './styles/root.css';
+@import './styles/button.css';
+@import './styles/sidebar.css';
+
+* {
+  font-family: 'Poppins', sans-serif;
+	margin: 0;
+	padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+	background-color: var(--body-color);
+	height: 100vh;
+}
