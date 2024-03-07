@@ -1,9 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 
 const Navbar = () => {
+
+  const [darkMode, setDarkMode] = useState(false);
+
+  const toggleDarkMode = () => {
+    document.querySelector('body').classList.toggle('dark');
+    // setDarkMode(!darkMode);
+  };
+
+  // Navbar
   return (
-    <nav className='sidebar'>
+    //Separar em componentes
+    <nav className={`sidebar${darkMode ? ' dark' : ''}`}>
       <header>
         <div className='image-text'>
           <span className='image'>
@@ -11,7 +21,7 @@ const Navbar = () => {
           </span>
           <div className="text header-text">
             <span className="name">Dashboard</span>
-            <span className="profession">Web dev</span>
+            <span className="profession">Gestora</span>
           </div>
         </div>
         <i className="toggle">&gt;</i>
@@ -44,10 +54,8 @@ const Navbar = () => {
               <i className="icon sun"></i>
             </div>
             <span className="mode-text text">Dark Mode</span>
-            <div className="toggle-switch">
-              <span className="switch">
-
-              </span>
+            <div className="toggle-switch" onClick={toggleDarkMode}>
+              <span className="switch"></span>
             </div>
           </li>
         </div>
