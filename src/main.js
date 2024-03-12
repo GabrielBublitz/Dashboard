@@ -77,7 +77,7 @@ const fs = require('fs');
 
 ipcMain.on('read-file', async (event, filePath) => {
   try {
-    const content = await fs.readFile(filePath, 'utf-8');
+    const content = await fs.promises.readFile(filePath, 'utf-8');
     event.reply('file-content', content);
   } catch (error) {
     console.error('Erro ao ler o arquivo:', error);

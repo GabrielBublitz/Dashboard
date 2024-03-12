@@ -1,30 +1,26 @@
-import React, { useState , useEffect} from 'react';
-// const fs = require('fs');
+import React, { useState, useEffect } from 'react';
+const { ipcRenderer } = window.require('electron');
 
 const Home = () => {
 
-    // const [fileContent, setFileContent] = useState('');
+    const [fileContent, setFileContent] = useState('');
 
-    // const readFile = (filePath) => {
-    //     try {
-    //       const content = fs.readFileSync(filePath, 'utf-8');
-    //       setFileContent(content);
-    //       console.log(fileContent);
-    //     } catch (error) {
-    //       console.error('Erro ao ler o arquivo:', error);
-    //     }
-    //   };
-
-    // useEffect(() => {
-    //     // Chame a função de leitura aqui ou em resposta a um evento, etc.
-    //     readFile('../User/userConfig.json');
-    //   }, []);
-
-    // console.log(fileContent);
+    useEffect(() => {
+      ipcRenderer.send('read-file', 'userConfig.json');
+  
+      ipcRenderer.on('file-content', (event, content) => {
+        setFileContent(content);
+        console.log('Conteúdo do arquivo:', content);
+      });
+  
+      return () => {
+        ipcRenderer.removeAllListeners('file-content');
+      };
+    }, []);
 
     return (
         <div>
-            Homea
+            Home
         </div>);
 };
 
