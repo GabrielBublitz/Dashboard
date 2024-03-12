@@ -1,5 +1,4 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
-
 const isDev = process.env.NODE_ENV !== "production";
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
@@ -15,7 +14,9 @@ const createWindow = () => {
     minHeight: 560,
     webPreferences: {
       preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
-      webSecurity: false
+      webSecurity: false,
+      nodeIntegration: true,
+      contextIsolation: false
     },
   });
 
@@ -69,5 +70,17 @@ app.on('activate', () => {
   // dock icon is clicked and there are no other windows open.
   if (BrowserWindow.getAllWindows().length === 0) {
     createWindow();
+  }
+});
+
+const fs = require('fs');
+
+ipcMain.on('read-file', async (event, filePath) => {
+  try {
+    const content = await fs.readFile(filePath, 'utf-8');
+    event.reply('file-content', content);
+  } catch (error) {
+    console.error('Erro ao ler o arquivo:', error);
+    event.reply('file-content', null);
   }
 });

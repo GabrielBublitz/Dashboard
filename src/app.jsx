@@ -17,7 +17,7 @@ const router = createBrowserRouter([
             },
             {
                 path: "dashboard",
-                element: <Dashboard/>
+                element: <Dashboard />
             }
         ]
     }
@@ -26,6 +26,6 @@ const router = createBrowserRouter([
 const root = createRoot(document.getElementById("root"));
 root.render(
     <React.StrictMode>
-        <RouterProvider router={router}/>
+        <RouterProvider router={router} />
     </React.StrictMode>
 );

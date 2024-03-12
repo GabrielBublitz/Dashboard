@@ -23,6 +23,10 @@
     background-color: var(--sidebar-color);
 }
 
+.sidebar.close{
+    width: 88px;
+}
+
 .sidebar li {
     height: 50px;
     margin-top: 10px;
@@ -108,6 +112,7 @@ header .image-text .header-text {
     border-radius: 50%;
     color: var(--sidebar-color);
     font-size: 22px;
+    cursor: pointer;
 }
 
 /* Seach bar */

@@ -3,17 +3,18 @@ import { NavLink } from 'react-router-dom';
 
 const Navbar = () => {
 
-  const [darkMode, setDarkMode] = useState(false);
+  const toggle = () =>{
+    document.querySelector('.sidebar').classList.toggle('close');
+  };
 
   const toggleDarkMode = () => {
     document.querySelector('body').classList.toggle('dark');
-    // setDarkMode(!darkMode);
   };
 
   // Navbar
   return (
     //Separar em componentes
-    <nav className={`sidebar${darkMode ? ' dark' : ''}`}>
+    <nav className='sidebar close'>
       <header>
         <div className='image-text'>
           <span className='image'>
@@ -24,7 +25,7 @@ const Navbar = () => {
             <span className="profession">Gestora</span>
           </div>
         </div>
-        <i className="toggle">&gt;</i>
+        <i className="toggle" onClick={toggle}>&gt;</i>
       </header>
       <div className='menu-bar'>
         <div className="menu">
