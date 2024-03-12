@@ -3,6 +3,13 @@
     font-size: 16px;
     font-weight: 500;
     color: var(--text-color);
+    transition: var(--tran-03);
+    white-space: nowrap;
+    opacity: 1;
+}
+
+.sidebar.close .text {
+    opacity: 0;
 }
 
 .sidebar .image {
@@ -21,6 +28,7 @@
     width: 250px;
     padding: 10px 14px;
     background-color: var(--sidebar-color);
+    transition: var(--tran-05);
 }
 
 .sidebar.close{
@@ -64,7 +72,11 @@
 .sidebar li a:hover .icon,
 .sidebar li a:hover .text {
     color: var(--sidebar-color);
-    transition: var(--tran-02);
+}
+
+body.dark .sidebar li a:hover .icon,
+body.dark .sidebar li a:hover .text {
+    color: var(--text-color);
 }
 
 .sidebar .image-text img {
@@ -102,7 +114,7 @@ header .image-text .header-text {
     position: absolute;
     top: 50%;
     right: -25px;
-    transform: translateY(-50%);
+    transform: translateY(-50%) rotate(180deg);
     height: 25px;
     width: 25px;
     background-color: var(--primary-color);
@@ -113,11 +125,23 @@ header .image-text .header-text {
     color: var(--sidebar-color);
     font-size: 22px;
     cursor: pointer;
+    transition: var(--tran-03);
 }
 
 /* Seach bar */
+
+.sidebar.close header .toggle{
+    transform: translateY(-50%);
+}
+
+body.dark .sidebar header .toggle{
+    transform: rotate(180deg);
+    color: var(--text-color);
+}
+
 .sidebar .search-box {
     background-color: var(--primary-color-light);
+    border-radius: 6px;
 }
 
 .search-box input {
@@ -137,6 +161,8 @@ header .image-text .header-text {
 }
 
 .menu-bar .mode{
+    position: relative;
+    border-radius: 6px;
     background-color: var(--primary-color-light);
 }
 
@@ -156,12 +182,16 @@ header .image-text .header-text {
 }
 
 .menu-bar .mode .toggle-switch{
+    position: absolute;
+    right: 0;
     display: flex;
     align-items: center;
     justify-content: center;
     height: 100%;
     min-width: 60px;
     cursor: pointer;
+    border-radius: 6px;
+    background: var(--primary-color-light);
 }
 
 .toggle-switch .switch{

@@ -3,12 +3,19 @@ import { NavLink } from 'react-router-dom';
 
 const Navbar = () => {
 
-  const toggle = () =>{
+  const toggle = () => {
     document.querySelector('.sidebar').classList.toggle('close');
   };
 
   const toggleDarkMode = () => {
-    document.querySelector('body').classList.toggle('dark');
+    var body = document.querySelector('body');
+    body.classList.toggle('dark');
+
+    if (body.classList.contains('dark')) {
+      document.querySelector('.mode-text').innerText = 'Light Mode';
+    } else {
+      document.querySelector('.mode-text').innerText = 'Dark Mode';
+    }
   };
 
   // Navbar
