@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { NavLink } from 'react-router-dom';
 
 const Navbar = () => {
@@ -22,14 +22,12 @@ const Navbar = () => {
     }
   };
 
-  // Navbar
   return (
     //Separar em componentes
     <nav className='sidebar close'>
       <header>
         <div className='image-text'>
           <span className='image'>
-            {/* <img alt='logo' /> */}
           </span>
           <div className="text header-text">
             <span className="name">Dashboard</span>
@@ -58,7 +56,7 @@ const Navbar = () => {
             <li className="nav-links">
               <NavLink to="dashboard">
                 <i className="icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="none"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1V5zM4 15a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-4zM4 5a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5zm8 10a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1h-6a1 1 0 0 1-1-1v-4z"></path></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="none"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1V5zM4 15a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-4zM4 5a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5zm8 10a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1h-6a1 1 0 0 1-1-1v-4z"></path></svg>
                 </i>
                 <span className='text nav-text'>Dashboard</span>
               </NavLink>
@@ -68,8 +66,10 @@ const Navbar = () => {
         <div className="bottom-content">
           <li className="mode">
             <div className="moon-sun">
-              <i className="icon moon"></i>
-              <i className="icon sun"></i>
+              <i className="icon moon">
+                <svg xmlns="http://www.w3.org/2000/svg" width='30px' viewBox="0 0 101 101"><path d="M76.4 28.6c.9-.1 1.7-.8 1.9-1.7.3-.9 0-1.9-.8-2.5-6.1-5.1-13.9-8-21.9-8-18.8 0-34.1 15.3-34.1 34.1s15.3 34.1 34.1 34.1c8.4 0 16.6-3.1 22.9-8.9.7-.6 1-1.6.7-2.5-.3-.9-1.1-1.5-2-1.7C66.3 70.3 58.1 61 58.1 50c0-10.7 7.7-19.7 18.3-21.4zM53.3 50c0 11.6 7.5 21.6 18.1 25.1-4.7 3-10.1 4.6-15.7 4.6-16.1 0-29.3-13.1-29.3-29.3s13.1-29.3 29.3-29.3c5.2 0 10.3 1.4 14.8 4C60.3 29 53.3 38.7 53.3 50z"></path></svg>
+              </i>
+              <i className="icon sun"><svg xmlns="http://www.w3.org/2000/svg" width='30px' viewBox="0 0 101 101" id="sun"><path d="M50.5 34C41.4 34 34 41.4 34 50.5S41.4 67 50.5 67 67 59.6 67 50.5 59.6 34 50.5 34zm0 28.2c-6.4 0-11.7-5.2-11.7-11.7S44 38.8 50.5 38.8 62.2 44 62.2 50.5s-5.3 11.7-11.7 11.7zM50.5 28.8c1.3 0 2.4-1.1 2.4-2.4v-7.6c0-1.3-1.1-2.4-2.4-2.4s-2.4 1.1-2.4 2.4v7.6c0 1.3 1.1 2.4 2.4 2.4zM50.5 72.2c-1.3 0-2.4 1.1-2.4 2.4v7.6c0 1.3 1.1 2.4 2.4 2.4s2.4-1.1 2.4-2.4v-7.6c0-1.3-1.1-2.4-2.4-2.4zM67.5 35.9c.6 0 1.2-.2 1.7-.7l5.4-5.4c.9-.9.9-2.5 0-3.4s-2.5-.9-3.4 0l-5.4 5.4c-.9.9-.9 2.5 0 3.4.5.4 1.1.7 1.7.7zM31.8 65.8l-5.4 5.4c-.9.9-.9 2.5 0 3.4.5.5 1.1.7 1.7.7.6 0 1.2-.2 1.7-.7l5.4-5.4c.9-.9.9-2.5 0-3.4s-2.5-.9-3.4 0zM82.2 48.1h-7.6c-1.3 0-2.4 1.1-2.4 2.4s1.1 2.4 2.4 2.4h7.6c1.3 0 2.4-1.1 2.4-2.4s-1.1-2.4-2.4-2.4zM28.8 50.5c0-1.3-1.1-2.4-2.4-2.4h-7.6c-1.3 0-2.4 1.1-2.4 2.4s1.1 2.4 2.4 2.4h7.6c1.3 0 2.4-1.1 2.4-2.4zM69.2 65.8c-.9-.9-2.5-.9-3.4 0s-.9 2.5 0 3.4l5.4 5.4c.5.5 1.1.7 1.7.7.6 0 1.2-.2 1.7-.7.9-.9.9-2.5 0-3.4l-5.4-5.4zM31.8 35.2c.5.5 1.1.7 1.7.7s1.2-.2 1.7-.7c.9-.9.9-2.5 0-3.4l-5.4-5.4c-.9-.9-2.5-.9-3.4 0s-.9 2.5 0 3.4l5.4 5.4z"></path></svg></i>
             </div>
             <span className="mode-text text">Dark Mode</span>
             <div className="toggle-switch" onClick={toggleDarkMode}>

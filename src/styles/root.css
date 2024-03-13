@@ -12,4 +12,11 @@
     --tran-03: all 0.3s ease;
     --tran-04: all 0.4s ease;
     --tran-05: all 0.5s ease;
+
+    /* Padding */
+    --padding-5: 5px;
+    --padding-10: 10px;
+
+    /* Colors */
+    --ok-color: #28a745
 }

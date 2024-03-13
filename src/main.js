@@ -84,3 +84,14 @@ ipcMain.on('read-file', async (event, filePath) => {
     event.reply('file-content', null);
   }
 });
+
+const axios = require('axios');
+
+ipcMain.on('fetch-data', async (event, url) => {
+  try {
+      const response = await axios.get(url);
+      event.reply('data-fetched', { data: response.data, status: response.status});
+  } catch (error) {
+      event.reply('fetch-error', error.message);
+  }
+});
