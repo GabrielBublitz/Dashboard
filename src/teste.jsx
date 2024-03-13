@@ -5,38 +5,38 @@ const { ipcRenderer } = window.require('electron');
 
 const App = () => {
 
-    const [fileContent, setFileContent] = useState('');
+  const [fileContent, setFileContent] = useState('');
 
-    useEffect(() => {
-      ipcRenderer.send('read-file', 'userConfig.json');
-  
-      ipcRenderer.on('file-content', (event, content) => {
-        setFileContent(content);
+  useEffect(() => {
+    ipcRenderer.send('read-file', 'userConfig.json');
 
-        if(JSON.parse(content).darkmode){
-            var body = document.querySelector('body');
+    ipcRenderer.on('file-content', (event, content) => {
+      setFileContent(content);
 
-            body.classList.add('dark');
+      if (JSON.parse(content).darkmode) {
+        var body = document.querySelector('body');
 
-            if (body.classList.contains('dark')) {
-                document.querySelector('.mode-text').innerText = 'Light Mode';
-              } else {
-                document.querySelector('.mode-text').innerText = 'Dark Mode';
-              }
+        body.classList.add('dark');
+
+        if (body.classList.contains('dark')) {
+          document.querySelector('.mode-text').innerText = 'Light Mode';
+        } else {
+          document.querySelector('.mode-text').innerText = 'Dark Mode';
         }
-      });
-  
-      return () => {
-        ipcRenderer.removeAllListeners('file-content');
-      };
-    }, []);
+      }
+    });
 
-    return (
-        <div>
-            <Navbar />
-            <Outlet/>
-        </div>
-    );
+    return () => {
+      ipcRenderer.removeAllListeners('file-content');
+    };
+  }, []);
+
+  return (
+    <div>
+      <Navbar />
+      <Outlet />
+    </div>
+  );
 };
 
 export default App;

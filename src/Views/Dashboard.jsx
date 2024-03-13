@@ -2,9 +2,9 @@ import React from 'react';
 
 const Dashboard = () => {
     return (
-        <div>
-            Dashboard
-        </div>);
+        <section className='home'>
+            <div className="text">Dashboard</div>
+        </section>);
 };
 
 export default Dashboard;

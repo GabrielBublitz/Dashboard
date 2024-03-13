@@ -3,9 +3,9 @@ const { ipcRenderer } = window.require('electron');
 
 const Home = () => {
     return (
-        <div>
-            Home
-        </div>);
+        <section className='home'>
+            <div className="text">Home</div>
+        </section>);
 };
 
 export default Home;
