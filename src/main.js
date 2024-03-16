@@ -21,6 +21,8 @@ const createWindow = () => {
     },
   });
 
+  mainWindow.setMenu(null);
+
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
 
   if (isDev) {
