@@ -1,0 +1,21 @@
+.dash-container{
+    background-color: var(--primary-color-light);
+    border-radius: 6px;
+    padding: var(--padding-15);
+    width: 100%;
+    transition: var(--tran-05);
+}
+
+.dash-container .dash-container-title{
+    font-size: 40px;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.card-container{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 16px;
+    width: 100%;
+}

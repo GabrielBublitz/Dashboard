@@ -2,6 +2,7 @@
 @import './styles/button.css';
 @import './styles/sidebar.css';
 @import './styles/home.css';
+@import './styles/dashboard.css';
 
 * {
   font-family: 'Poppins', sans-serif;

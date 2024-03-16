@@ -1,18 +1,18 @@
 import * as React from 'react';
 import { createRoot } from 'react-dom/client';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { RouterProvider, createHashRouter } from 'react-router-dom';
 
 import Teste from './teste.jsx'
 import Home from './Views/Home.jsx'
 import Dashboard from './Views/Dashboard.jsx'
 
-const router = createBrowserRouter([
+const router = createHashRouter([
     {
-        path: "/main_window",
+        path: "/",
         element: <Teste />,
         children: [
             {
-                path: "/main_window",
+                path: "/home",
                 element: <Home />
             },
             {

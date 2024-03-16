@@ -19,13 +19,6 @@
     justify-content: center;
 }
 
-.sidebar .image-text .image{
-    background-image: url("../Images/icons8-galaxy-24.png");
-    background-repeat: no-repeat;
-    background-size: auto;
-    background-position: center;
-}
-
 /* SideBar */
 
 .sidebar {

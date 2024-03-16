@@ -29,11 +29,12 @@ module.exports = [
     }
   },
   {
-    test: /\.(svg|png|jpg|gif)$/,
-    include: [
-      path.resolve(__dirname, "src/Images")
-    ],
-    type: "asset/inline"
+    test: /\.(?:png|jpg|svg)$/,
+    loader: 'url-loader',
+    options: {
+      // Inline images smaller than 10kb as data URIs
+      limit: 10000
+    }
   }
   // Put your webpack loader rules in this array.  This is where you would put
   // your ts-loader configuration for instance:

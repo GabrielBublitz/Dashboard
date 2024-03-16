@@ -12,6 +12,7 @@ const createWindow = () => {
     minWidth: 560,
     height: 720,
     minHeight: 560,
+    center: true,
     webPreferences: {
       preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
       webSecurity: false,
@@ -90,7 +91,7 @@ const axios = require('axios');
 ipcMain.on('fetch-data', async (event, url) => {
   try {
       const response = await axios.get(url);
-      event.reply('data-fetched', { data: response.data, status: response.status});
+      event.reply('data-fetched', [{ "data": response.data, "status": response.status}]);
   } catch (error) {
       event.reply('fetch-error', error.message);
   }
