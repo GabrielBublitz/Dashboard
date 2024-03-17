@@ -1,4 +1,40 @@
 {
     "darkmode": true,
-    "services": []
+    "customers_services": [
+        {
+            "company": "Empresa 1",
+            "portal": "link 1",
+            "web_service": "link 2",
+            "services_base_url": "http://localhost:",
+            "services_mw": [
+                {
+                    "name": "Integration",
+                    "service_path": "/Integration/status",
+                    "servers": [
+                        "a",
+                        "b"
+                    ],
+                    "port": 3001
+                }
+            ]
+        },
+        {
+            "company": "Empresa 2",
+            "portal": "link 1",
+            "web_service": "link 2",
+            "services_base_url": "http://localhost:",
+            "services_mw": [
+                {
+                    "name": "Integration",
+                    "service_path": "/Integration/status2",
+                    "servers": [
+                        "a",
+                        "b"
+                    ],
+                    "port": 3001
+                }
+            ]
+        }
+    ],
+    "desenv_services": []
 }

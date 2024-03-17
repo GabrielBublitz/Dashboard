@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 import Navbar from './Components/Navbar.jsx';
 const config = require('../userConfig.json');
 
 const App = () => {
-  const [fileContent, setFileContent] = useState('');
 
   useEffect(() => {
     if (config.darkmode) {
@@ -19,8 +18,7 @@ const App = () => {
       }
     }
 
-    return () => {
-    };
+    return () => { };
   }, []);
 
   return (

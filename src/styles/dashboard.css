@@ -19,3 +19,11 @@
     gap: 16px;
     width: 100%;
 }
+
+.padding-15{
+    padding: var(--padding-15) 0;
+}
+
+.card-container h2{
+    color: var(--text-color);
+}

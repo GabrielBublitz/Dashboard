@@ -1,69 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import DashContainer from '../Components/DashContainer.jsx';
-const { ipcRenderer } = window.require('electron');
+const { customers_services } = require('../../userConfig.json');
 
 const Home = () => {
+    const [data, setData] = useState([]);
 
-    const [data, setData] = useState([
-        {
-            "name": "Empresa 1",
-            "services": [
-                {
-                    'status': 200,
-                    'workers': 2,
-                },
-                {
-                    'status': 200,
-                    'workers': 2,
-                }
-                ,
-                {
-                    'status': 200,
-                    'workers': 2,
-                }
-                ,
-                {
-                    'status': 200,
-                    'workers': 2,
-                }
-            ],
-        },
-        {
-            
-            "name": "Empresa 2",
-            "services": [
-                {
-                    'status': 200,
-                    'workers': 2,
-                },
-                {
-                    'status': 200,
-                    'workers': 2,
-                }
-            ],
-        }
-    ]);
+    useEffect(() => {
+        var json = [];
 
-    // useEffect(() => {
-    //     const handleDataReceived = (event, response) => {
-    //         setData(response);
-    //     };
+        customers_services.map((item) => {
+            json.push(item);
+        });
 
-    //     ipcRenderer.send('fetch-data', 'https://pokeapi.co/api/v2/pokemon/ditto');
-
-    //     ipcRenderer.on('data-fetched', handleDataReceived);
-
-    //     return () => {
-    //         ipcRenderer.removeListener('data-fetched', handleDataReceived);
-    //     };
-    // }, []);
+        setData(json);
+        
+        return () => { };
+    }, []);
 
     return (
         <section className='home'>
-            <div className="text">Home</div>
-            <div className="container">
+            <div className='text'>Home</div>
+            <div className='container'>
                 {data.map((item, index) => (
-                    <DashContainer key={index} name={item.name} services={item.services} />
+                    <DashContainer key={index} name={item.company} base_url={item.services_base_url} services={item.services_mw} />
                 ))}
             </div>
         </section>);

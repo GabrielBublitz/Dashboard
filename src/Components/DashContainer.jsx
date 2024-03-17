@@ -1,13 +1,13 @@
 import React from 'react';
-import Card from './Card.jsx';
+import CardContainer from './CardContainer.jsx';
 
 const DashContainer = (props) => {
     return (
         <div className='dash-container'>
             <h1 className='dash-container-title'>{props.name}</h1>
-            <div className="card-container">
+            <div className="card-container padding-15">
                 {props.services.map((item, index) => {
-                    return <Card key={index} status={item.status} workers={item.workers}  />
+                    return <CardContainer key={index} item={item} base_url={props.base_url} />;
                 })}
             </div>
         </div>
