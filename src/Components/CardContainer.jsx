@@ -10,10 +10,8 @@ const CardContainer = (props) => {
             <div className='card-container'>
                 {data.servers.map((item, index) => {
                     item = {
-                        path: data.service_path,
-                        server: item,
-                        base_url: props.base_url,
-                        port: data.port
+                        url: `${props.base_url}${data.port}${data.service_path}${item}`,
+                        server: item
                     };
 
                     return <Card key={index} server={item} />;

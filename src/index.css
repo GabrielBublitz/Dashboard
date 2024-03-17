@@ -3,6 +3,7 @@
 @import './styles/sidebar.css';
 @import './styles/home.css';
 @import './styles/dashboard.css';
+@import './styles/status_card.css';
 
 * {
 	font-family: 'Poppins', sans-serif;

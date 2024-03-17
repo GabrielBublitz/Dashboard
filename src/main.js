@@ -9,9 +9,9 @@ if (require('electron-squirrel-startup')) {
 const createWindow = () => {
   const mainWindow = new BrowserWindow({
     width: 1280,
-    minWidth: 560,
+    minWidth: 1280,
     height: 720,
-    minHeight: 560,
+    minHeight: 720,
     center: true,
     webPreferences: {
       preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
@@ -90,10 +90,10 @@ ipcMain.on('read-file', async (event, filePath) => {
 
 const axios = require('axios');
 
-ipcMain.on('fetch-data', async (event, url) => {
+ipcMain.on('fetch-data', async (event, request) => {
   try {
-      const response = await axios.get(url);
-      event.reply('data-fetched', { "data": response.data, "status": response.status});
+      const response = await axios.get(request.url);
+      event.reply('data-fetched', { 'data': response.data, 'status': response.status, 'identifier': request.url});
   } catch (error) {
       event.reply('fetch-error', error.message);
   }

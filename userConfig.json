@@ -26,7 +26,7 @@
             "services_mw": [
                 {
                     "name": "Integration",
-                    "service_path": "/Integration/status2",
+                    "service_path": "/Integration/status",
                     "servers": [
                         "a",
                         "b"

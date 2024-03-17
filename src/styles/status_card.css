@@ -1,0 +1,12 @@
+.ok{
+    background-color: var(--ok-color);
+}
+
+.warning{
+    background-color: var(--warning-color);
+}
+
+
+.error{
+    background-color: var(--error-color);
+}

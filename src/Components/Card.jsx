@@ -6,16 +6,46 @@ const Card = (props) => {
     const [service_response, setResponse] = useState({});
     const [response_data, setResponseData] = useState({});
 
+    function GetStatus() {
+        var className = 'card ';
+
+        if ((response_data.workers != undefined && Array.isArray(response_data.workers)) && response_data.workers.length == 0) {
+            className += 'error'
+            return className;
+        }
+
+        if ((response_data.workers != undefined && Array.isArray(response_data.workers)) && response_data.workers.length != 2) {
+            className += 'warning'
+            return className;
+        }
+
+        className += service_response.status === 200 ? 'ok' : 'card';
+
+        return className;
+    }
+
+    function FetchData(){
+        ipcRenderer.send('fetch-data', {
+            url: data.url
+        });
+    }
+
     useEffect(() => {
+
         const handleDataReceived = (event, response) => {
-            setResponse(response);
+            if (response.identifier === data.url) {
+                setResponse(response);
+            }
         };
 
-        ipcRenderer.send('fetch-data', `${data.base_url}${data.port}${data.path}`);
+        FetchData();
+
+        const interval = setInterval(FetchData, 20000);
 
         ipcRenderer.on('data-fetched', handleDataReceived);
 
         return () => {
+            clearInterval(interval);
             ipcRenderer.removeListener('data-fetched', handleDataReceived);
         };
     }, []);
@@ -23,12 +53,11 @@ const Card = (props) => {
     useEffect(() => {
         if (service_response.data && service_response.data.length > 0) {
             setResponseData(service_response.data[0]);
-            console.log(response_data)
         }
     }, [service_response]);
 
     return (
-        <div className={service_response.status === 200 ? 'card ok' : 'card'}>
+        <div className={GetStatus()}>
             <div className='title white-text'>Server {data.server.toUpperCase()}</div>
             <div className='stats'>
                 <div className='white-text'>Status: {service_response.status}</div>
