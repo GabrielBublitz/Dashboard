@@ -176,6 +176,10 @@ body.dark .sidebar header .toggle{
     opacity: 0;
 }
 
+.sidebar.close .nav-text{
+    display: none;
+}
+
 .sidebar .menu-bar {
     height: calc(100% - 50px);
     display: flex;
