@@ -32,7 +32,7 @@ const Navbar = () => {
       <header>
         <div className='image-text'>
           <span className='image'>
-            <img src={logo} alt="" />
+            <img src={logo} alt="" className='logo' />
           </span>
           <div className="text header-text">
             <span className="name">Dashboard</span>

@@ -9,6 +9,11 @@ const Card = (props) => {
     function GetStatus() {
         var className = 'card ';
 
+        if(service_response.errorMessage){
+            className += 'error'
+            return className;
+        }
+
         if ((response_data.workers != undefined && Array.isArray(response_data.workers)) && response_data.workers.length == 0) {
             className += 'error'
             return className;
@@ -24,31 +29,36 @@ const Card = (props) => {
         return className;
     }
 
-    function FetchData(){
+    function fetchData(){
         ipcRenderer.send('fetch-data', {
             url: data.url
         });
     }
 
     useEffect(() => {
-
         const handleDataReceived = (event, response) => {
             if (response.identifier === data.url) {
                 setResponse(response);
             }
         };
 
-        FetchData();
+        const handleError = (event, response) =>{
+            setResponse(response);
+        }
 
-        const interval = setInterval(FetchData, 20000);
+        fetchData();
+
+        const interval = setInterval(fetchData, 10000);
 
         ipcRenderer.on('data-fetched', handleDataReceived);
 
+        ipcRenderer.on('fetch-error', handleError);
+
         return () => {
-            clearInterval(interval);
             ipcRenderer.removeListener('data-fetched', handleDataReceived);
+            clearInterval(interval);
         };
-    }, []);
+    }, [data]);
 
     useEffect(() => {
         if (service_response.data && service_response.data.length > 0) {
@@ -58,15 +68,15 @@ const Card = (props) => {
 
     return (
         <div className={GetStatus()}>
-            <div className='title white-text'>Server {data.server.toUpperCase()}</div>
+            <div className='title white-text'>Server {data.server ? data.server.toUpperCase() : '-'}</div>
             <div className='stats'>
-                <div className='white-text'>Status: {service_response.status}</div>
+                <div className='white-text'>Status: {service_response.status ? service_response.status : ' -'}</div>
                 <div className='white-text'>Workers:
                     {
-                        response_data.workers && Array.isArray(response_data.workers) ? ` ${response_data.workers.length}` : 'Loading...'
+                        response_data.workers && Array.isArray(response_data.workers) ? ` ${response_data.workers.length}` : ' -'
                     }
                 </div>
-                <div className='white-text'>Rogues: {response_data.rogues}</div>
+                <div className='white-text'>Rogues: {response_data.rogues || response_data.rogues == 0 ? `${response_data.rogues}` : ' -'}</div>
             </div>
         </div>
     );

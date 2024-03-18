@@ -92,9 +92,9 @@ const axios = require('axios');
 
 ipcMain.on('fetch-data', async (event, request) => {
   try {
-      const response = await axios.get(request.url);
-      event.reply('data-fetched', { 'data': response.data, 'status': response.status, 'identifier': request.url});
+    const response = await axios.get(request.url);
+    event.reply('data-fetched', { 'data': response.data, 'status': response.status, 'identifier': request.url });
   } catch (error) {
-      event.reply('fetch-error', error.message);
+    event.reply('fetch-error', { satus: 400, errorMessage: error.message });
   }
 });
