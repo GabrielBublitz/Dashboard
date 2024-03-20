@@ -2,12 +2,15 @@
     display: inline-block;
     border-radius: 10px;
     border: none;
-    color: #FFFFFF;
+    color: var(--button-text-color);
+    background-color: var(--button-primary-color);
     text-align: center;
     font-size: 17px;
-    padding: 16px;
-    width: 130px;
-    transition: all 0.5s;
+    padding: var(--padding-5) var(--padding-10);
+    transition: var(--tran-03);
     cursor: pointer;
-    margin: 5px;
+}
+
+.btn:hover{
+    background-color: var(--button-primary-color-light);
 }

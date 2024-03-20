@@ -21,8 +21,13 @@
 
     /* Colors */
     --ok-color: #449c5a;
-    --warning-color: #c7bf55;
+    --warning-color: #d6cc3c;
     --error-color: #c94747;
+
+    /* Buttons */
+    --button-text-color: #FFF;
+    --button-primary-color: #695cfe;
+    --button-primary-color-light: #463bc0;
 }
 
 body.dark{
@@ -33,4 +38,7 @@ body.dark{
     --primary-color-light: #3A3B3C;
     --toggle-color: #FFF;
     --text-color: #CCC;
+
+    /* Buttons */
+    --button-primary-color: #695cfe;
 }

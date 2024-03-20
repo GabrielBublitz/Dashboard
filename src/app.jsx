@@ -5,6 +5,7 @@ import { RouterProvider, createHashRouter } from 'react-router-dom';
 import Teste from './teste.jsx'
 import Home from './Views/Home.jsx'
 import Dashboard from './Views/Dashboard.jsx'
+import { DataProvider } from './Context/DataContext.jsx';
 
 const router = createHashRouter([
     {
@@ -25,5 +26,7 @@ const router = createHashRouter([
 
 const root = createRoot(document.getElementById("root"));
 root.render(
-    <RouterProvider router={router} />
+    <DataProvider>
+        <RouterProvider router={router} />
+    </DataProvider>
 );

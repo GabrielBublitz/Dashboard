@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from 'react';
+import { useData } from '../Context/DataContext.jsx';
+
 const { ipcRenderer } = window.require('electron');
 
 const Card = (props) => {
-    const [data] = useState(props.server);
+    const [cardData] = useState(props.server);
     const [service_response, setResponse] = useState({});
     const [response_data, setResponseData] = useState({});
+    const { data } = useData();
 
     function GetStatus() {
         var className = 'card ';
 
-        if(service_response.errorMessage){
+        if (service_response.errorMessage) {
             className += 'error'
             return className;
         }
@@ -29,26 +32,26 @@ const Card = (props) => {
         return className;
     }
 
-    function fetchData(){
+    function fetchData() {
         ipcRenderer.send('fetch-data', {
-            url: data.url
+            url: cardData.url
         });
     }
 
     useEffect(() => {
+        const interval = setInterval(fetchData, 10000);
+
         const handleDataReceived = (event, response) => {
-            if (response.identifier === data.url) {
+            if (response.identifier === cardData.url) {
                 setResponse(response);
             }
         };
 
-        const handleError = (event, response) =>{
+        const handleError = (event, response) => {
             setResponse(response);
         }
 
         fetchData();
-
-        const interval = setInterval(fetchData, 10000);
 
         ipcRenderer.on('data-fetched', handleDataReceived);
 
@@ -58,7 +61,7 @@ const Card = (props) => {
             ipcRenderer.removeListener('data-fetched', handleDataReceived);
             clearInterval(interval);
         };
-    }, [data]);
+    }, [cardData, data]);
 
     useEffect(() => {
         if (service_response.data && service_response.data.length > 0) {
@@ -68,7 +71,7 @@ const Card = (props) => {
 
     return (
         <div className={GetStatus()}>
-            <div className='title white-text'>Server {data.server ? data.server.toUpperCase() : '-'}</div>
+            <div className='title white-text'>Server {cardData.server ? cardData.server.toUpperCase() : '-'}</div>
             <div className='stats'>
                 <div className='white-text'>Status: {service_response.status ? service_response.status : ' -'}</div>
                 <div className='white-text'>Workers:
