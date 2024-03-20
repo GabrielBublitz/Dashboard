@@ -53,6 +53,7 @@
     font-size: 20px;
     fill: var(--text-color);
     stroke: var(--text-color);
+    transition: var(--tran-04);
 }
 
 .sidebar li .text {
@@ -73,7 +74,16 @@
     background: var(--primary-color);
 }
 
-.sidebar li a:hover .icon,
+body.dark .sidebar li a:hover .icon{
+    fill: var(--text-color);
+    stroke: var(--text-color);
+}
+
+.sidebar li a:hover .icon{
+    fill: var(--sidebar-color);
+    stroke: var(--sidebar-color);
+}
+
 .sidebar li a:hover .text {
     color: var(--sidebar-color);
 }
