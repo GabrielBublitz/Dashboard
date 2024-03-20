@@ -4,7 +4,7 @@
     left: 250px;
     width: calc(100% - 250px);
     background-color: var(--body-color);
-    padding: 8px 40px;
+    padding: 58px 40px 8px 40px;
     transition: var(--tran-05);
 }
 
@@ -19,8 +19,18 @@
 }
 
 .container-header{
+    position: fixed;
+    top: 0;
+    width: calc(100% - 330px);
     display: flex;
     justify-content: space-between;
+    transition: var(--tran-05);
+    background-color: var(--body-color);
+    padding: 10px 0px;
+}
+
+.sidebar.close~.home .container-header{
+    width: calc(100% - 168px);
 }
 
 .sidebar.close~.home {

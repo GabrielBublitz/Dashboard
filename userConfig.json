@@ -15,6 +15,24 @@
                         "b"
                     ],
                     "port": 3001
+                },
+                {
+                    "name": "Service",
+                    "service_path": "/Service/status",
+                    "servers": [
+                        "a",
+                        "b"
+                    ],
+                    "port": 3001
+                },
+                {
+                    "name": "Service",
+                    "service_path": "/Service/status",
+                    "servers": [
+                        "a",
+                        "b"
+                    ],
+                    "port": 3001
                 }
             ]
         },

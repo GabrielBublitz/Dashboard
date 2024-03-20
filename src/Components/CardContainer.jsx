@@ -5,7 +5,7 @@ const CardContainer = (props) => {
     const [data] = useState(props.item);
 
     return (
-        <>
+        <div>
             <h2 className=''>{data.name}</h2>
             <div className='card-container'>
                 {data.servers.map((item, index) => {
@@ -17,7 +17,7 @@ const CardContainer = (props) => {
                     return <Card key={index} server={item} />;
                 })}
             </div>
-        </>
+        </div>
     );
 }
 
