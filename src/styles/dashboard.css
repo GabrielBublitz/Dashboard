@@ -24,6 +24,10 @@
     padding: var(--padding-15) 0;
 }
 
+.padding-5{
+    padding: var(--padding-5) 0;
+}
+
 .card-container h2{
     color: var(--text-color);
 }

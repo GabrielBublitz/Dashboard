@@ -6,7 +6,7 @@ const CardContainer = (props) => {
 
     return (
         <div>
-            <h2 className=''>{data.name}</h2>
+            <h2 className='padding-5'>{data.name}</h2>
             <div className='card-container'>
                 {data.servers.map((item, index) => {
                     item = {
