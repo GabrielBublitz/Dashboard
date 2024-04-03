@@ -7,6 +7,7 @@
     --toggle-color: #DDD;
     --text-color: #707070;
     --card-text-color: #FFF;
+    --default-component-color: #707070;
 
     /* Transition */
     --tran-02: all 0.2s ease;
@@ -38,7 +39,8 @@ body.dark{
     --primary-color-light: #3A3B3C;
     --toggle-color: #FFF;
     --text-color: #CCC;
-
+    --default-component-color: #3A3B3C;
+    
     /* Buttons */
     --button-primary-color: #695cfe;
 }

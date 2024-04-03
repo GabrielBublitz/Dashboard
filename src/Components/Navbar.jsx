@@ -2,6 +2,8 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import logo from '../Images/logo.png';
 
+const fs = window.require("fs")
+const userConfig = require('../../userConfig.json');
 
 const Navbar = () => {
 
@@ -15,19 +17,23 @@ const Navbar = () => {
   
 //#region DarkMode
   const toggleDarkMode = () => {
-    var body = document.querySelector('body');
-    body.classList.toggle('dark');
+    userConfig.darkmode = !userConfig.darkmode;
 
-    if (body.classList.contains('dark')) {
-      document.querySelector('.mode-text').innerText = 'Light Mode';
-    } else {
-      document.querySelector('.mode-text').innerText = 'Dark Mode';
+    try{
+      fs.writeFile('userConfig.json', JSON.stringify(userConfig, null, 2), 'utf8', (err) => {
+        if (err) {
+            console.error('Erro ao salvar o arquivo JSON:', err);
+        } else {
+            console.log('Arquivo JSON atualizado com sucesso.');
+        }
+    });
+    }catch(e){
+      console.error('Erro ao atualziar o userConfig:', error);
     }
   };
 //#endregion
 
   return (
-    //Separar em componentes
     <nav className='sidebar close'>
       <header>
         <div className='image-text'>

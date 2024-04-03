@@ -1,58 +1,58 @@
 {
-    "darkmode": true,
-    "customers_services": [
+  "darkmode": true,
+  "customers_services": [
+    {
+      "company": "Empresa 1",
+      "portal": "link 1",
+      "web_service": "link 2",
+      "services_base_url": "http://localhost:",
+      "services_mw": [
         {
-            "company": "Empresa 1",
-            "portal": "link 1",
-            "web_service": "link 2",
-            "services_base_url": "http://localhost:",
-            "services_mw": [
-                {
-                    "name": "Service",
-                    "service_path": "/Service/status",
-                    "servers": [
-                        "a",
-                        "b"
-                    ],
-                    "port": 3001
-                },
-                {
-                    "name": "Service",
-                    "service_path": "/Service/status",
-                    "servers": [
-                        "a",
-                        "b"
-                    ],
-                    "port": 3001
-                },
-                {
-                    "name": "Service",
-                    "service_path": "/Service/status",
-                    "servers": [
-                        "a",
-                        "b"
-                    ],
-                    "port": 3001
-                }
-            ]
+          "name": "Service",
+          "service_path": "/Service/status",
+          "servers": [
+            "a",
+            "b"
+          ],
+          "port": 3001
         },
         {
-            "company": "Empresa 2",
-            "portal": "link 1",
-            "web_service": "link 2",
-            "services_base_url": "http://localhost:",
-            "services_mw": [
-                {
-                    "name": "Service",
-                    "service_path": "/Service/status",
-                    "servers": [
-                        "a",
-                        "b"
-                    ],
-                    "port": 3001
-                }
-            ]
+          "name": "Service",
+          "service_path": "/Service/status",
+          "servers": [
+            "a",
+            "b"
+          ],
+          "port": 3001
+        },
+        {
+          "name": "Service",
+          "service_path": "/Service/status",
+          "servers": [
+            "a",
+            "b"
+          ],
+          "port": 3001
         }
-    ],
-    "desenv_services": []
+      ]
+    },
+    {
+      "company": "Empresa 2",
+      "portal": "link 1",
+      "web_service": "link 2",
+      "services_base_url": "http://localhost:",
+      "services_mw": [
+        {
+          "name": "Service",
+          "service_path": "/Service/status",
+          "servers": [
+            "a",
+            "b"
+          ],
+          "port": 3001
+        }
+      ]
+    }
+  ],
+  "desenv_services": []
 }

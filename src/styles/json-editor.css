@@ -1,0 +1,35 @@
+.editor-container{
+    height: 100%;
+    padding: var(--padding-10);
+}
+
+.json-editor{
+    color: var(--text-color);
+    font-size: 14px;
+    width: 100%;
+    border-color: var(--default-component-color);
+    border-radius: 6px;
+    padding: var(--padding-10);
+    resize: none;
+    overflow-y: scroll;
+    scrollbar-width: thin;
+    scrollbar-color: #888 #f0f0f0;
+}
+
+.json-editor:focus{
+    outline: none;
+}
+
+.json-editor::-webkit-scrollbar {
+    width: 10px;
+}
+
+.json-editor::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 6px;
+}
+
+.json-editor::-webkit-scrollbar-track {
+    border-radius: 6px;
+    background-color: #f0f0f0;
+}

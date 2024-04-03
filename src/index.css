@@ -4,6 +4,8 @@
 @import './styles/home.css';
 @import './styles/dashboard.css';
 @import './styles/status_card.css';
+@import './styles/json-editor.css';
+
 
 * {
 	font-family: 'Poppins', sans-serif;
@@ -20,4 +22,8 @@ body {
 
 .white-text {
 	color: var(--card-text-color);
+}
+
+.default-component{
+	background-color: var(--default-component-color);
 }
