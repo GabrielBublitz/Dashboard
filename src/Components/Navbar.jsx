@@ -69,7 +69,7 @@ const Navbar = () => {
                 <i className="icon">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="none"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1V5zM4 15a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-4zM4 5a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5zm8 10a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1h-6a1 1 0 0 1-1-1v-4z"></path></svg>
                 </i>
-                <span className='text nav-text'>Dashboard</span>
+                <span className='text nav-text'>Config</span>
               </NavLink>
             </li>
           </ul>
