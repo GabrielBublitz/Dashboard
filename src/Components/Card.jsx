@@ -39,7 +39,7 @@ const Card = (props) => {
     }
 
     useEffect(() => {
-        const interval = setInterval(fetchData, 10000);
+        const interval = setInterval(fetchData, 60000);
 
         const handleDataReceived = (event, response) => {
             if (response.identifier === cardData.url) {
