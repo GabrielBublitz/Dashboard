@@ -11,8 +11,14 @@ export const DataProvider = ({ children }) => {
         setData(newData);
     }
 
+    const [darkMode, setdarkMode] = useState(false);
+
+    const setdarkModeData = darkMode => {
+        setdarkMode(darkMode);
+    }
+
     return (
-        <DataContext.Provider value={{ data, setDataAndNotify }}>
+        <DataContext.Provider value={{ data, setDataAndNotify, darkMode, setdarkModeData }}>
             {children}
         </DataContext.Provider>
     );

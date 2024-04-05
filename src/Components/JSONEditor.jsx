@@ -1,29 +1,34 @@
 import React, { useState, useEffect } from 'react';
-const fs = window.require("fs")
-const userConfig = require('../../userConfig.json');
-
-document.getElementsByClassName('json-editor').value += JSON.stringify(userConfig)
+const { ipcRenderer } = window.require('electron');
+import { useData } from '../Context/DataContext.jsx';
+// const userConfig = require('../../userConfig.json');
 
 const JSONEditor = (props) => {
-    const [jsonData, setJsonData] = useState(userConfig);
+    const [jsonData, setJsonData] = useState({});
+    const { darkMode, setdarkModeData } = useData();
 
     const updateJsonData = (newData) => {
         setJsonData(newData);
     };
 
-    const handleJsonChange = () => {
+    const handleUpdateTheme = (request) =>{
+        setdarkModeData(request.darkmode)
+        console.log(darkMode);
+    }
+
+    const handleJsonChange = (event) => {
         if (document.getElementsByClassName('json-editor')[0].value) {
             try {
                 const newData = JSON.parse(document.getElementsByClassName('json-editor')[0].value);
                 updateJsonData(newData);
-
-                fs.writeFile('userConfig.json', JSON.stringify(newData, null, 2), 'utf8', (err) => {
-                    if (err) {
-                        console.error('Erro ao salvar o arquivo JSON:', err);
-                    } else {
-                        console.log('Arquivo JSON atualizado com sucesso.');
-                    }
-                });
+                setdarkModeData(newData.darkmode)
+            
+                ipcRenderer.send('write-file', { filePath: './userConfig.json', content: newData});
+                
+                // ipcRenderer.on('receive', (response) => {
+                //     setJsonData(response);
+                //     console.log('response');
+                // })
             } catch (error) {
                 console.error('Erro ao analisar o JSON:', error);
             }
@@ -32,11 +37,18 @@ const JSONEditor = (props) => {
 
     useEffect(() => {
         handleJsonChange();
+        // // handleUpdateTheme();
+        // ipcRenderer.removeAllListeners();
+        console.log('a')
+
     }, [props.save]);
 
     useEffect(() => {
-        document.getElementsByClassName('json-editor')[0].value = JSON.stringify(jsonData, null, 2, 'utf8');
-    }, [jsonData]);
+        ipcRenderer.send('read-file', './userConfig.json');
+        ipcRenderer.on('file-content', (event, content) => {
+            document.getElementsByClassName('json-editor')[0].value = JSON.stringify(content, null, 2, 'utf8');
+        });
+    }, []);
 
     return (
         <div className='editor-container'>

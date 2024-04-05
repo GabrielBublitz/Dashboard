@@ -1,5 +1,6 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const isDev = process.env.NODE_ENV !== "production";
+const config = require('../userConfig.json')
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -25,9 +26,9 @@ const createWindow = () => {
 
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
 
-  if (isDev) {
+  // if (isDev) {
     mainWindow.webContents.openDevTools();
-  }
+  // }
 
   ipcMain.on("close", () => {
     const window = BrowserWindow.getFocusedWindow();
@@ -57,10 +58,22 @@ const createWindow = () => {
   });
 };
 
+const loadConfig = async (filePath, content) =>{
+  try {
+    await fs.promises.writeFile(filePath, JSON.stringify(content, null, 2), 'utf8');
+    return config;
+  } catch (error) {
+    console.error('Erro ao salvar o arquivo JSON:', err);
+  }
+}
+
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on('ready', createWindow);
+app.on('ready', () => {
+  createWindow();
+  loadConfig('./userConfig.json', config);
+});
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
@@ -81,11 +94,22 @@ const fs = require('fs');
 ipcMain.on('read-file', async (event, filePath) => {
   try {
     const content = await fs.promises.readFile(filePath, 'utf-8');
-    event.reply('file-content', content);
+    event.reply('file-content', JSON.parse(content));
   } catch (error) {
     console.error('Erro ao ler o arquivo:', error);
     event.reply('file-content', null);
   }
+});
+
+
+ipcMain.on('write-file', async (event, request) => {
+  try{
+    var response = await loadConfig(request.filePath, request.content)
+    event.reply('receive', response);
+  }catch(e){
+    console.log("Erro: " + e);
+  }
+  
 });
 
 const axios = require('axios');
