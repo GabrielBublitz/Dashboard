@@ -7,7 +7,7 @@ const { ipcRenderer } = window.require('electron');
 
 
 const Navbar = () => {
-  const { setDarkModeData } = useData();
+  const { darkMode } = useData();
 
   const toggle = () => {
     document.querySelector('.sidebar').classList.toggle('close');
@@ -18,9 +18,9 @@ const Navbar = () => {
   }
 
   const handleFileContent = (event, response) => {
-    response.darkmode = !response.darkmode;
-    ipcRenderer.send('write-file', { filePath: './config.json', content: response });
+    response.darkmode = !darkMode;
 
+    ipcRenderer.send('write-file', { filePath: './config.json', content: response });
     ipcRenderer.removeListener('file-content', handleFileContent);
   }
 

@@ -1,6 +1,7 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const isDev = process.env.NODE_ENV !== "production";
 const config = require('../userConfig.json')
+const fs = require('fs');
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -68,12 +69,24 @@ const loadConfig = async (filePath, content) => {
   }
 }
 
+function validateConfigFileExist(caminho) {
+  try {
+      fs.accessSync(caminho, fs.constants.F_OK);
+      return true;
+  } catch (err) {
+      return false;
+  }
+}
+
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', () => {
   createWindow();
-  loadConfig('./config.json', config);
+  hasFile = validateConfigFileExist('./config.json');
+  if(!hasFile){
+    loadConfig('./config.json', config);
+  }
 });
 
 app.on('window-all-closed', () => {
@@ -90,12 +103,14 @@ app.on('activate', () => {
   }
 });
 
-const fs = require('fs');
+const readFile = async (filePath) => {
+  const content = await fs.promises.readFile(filePath, 'utf-8');
+  return content;
+};
 
 ipcMain.on('read-file', async (event, filePath) => {
   try {
-    const content = await fs.promises.readFile(filePath, 'utf-8');
-    
+    const content = await readFile(filePath);
     event.reply('file-content', JSON.parse(content));
 
   } catch (error) {
@@ -112,7 +127,7 @@ ipcMain.on('write-file', async (event, request) => {
     var response = await loadConfig(request.filePath, request.content);
 
     event.reply('receive', response);
-    
+
   } catch (e) {
     console.error("Erro: " + e);
   }

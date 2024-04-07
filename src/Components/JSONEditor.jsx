@@ -3,7 +3,7 @@ const { ipcRenderer } = window.require('electron');
 import { useData } from '../Context/DataContext.jsx';
 
 const JSONEditor = (props) => {
-    const { darkMode, setDarkModeData } = useData();
+    const { darkMode, setDarkModeData, setUserConfig } = useData();
 
     const handleJsonChange = () => {
         var jsonEditor = document.getElementsByClassName('json-editor')[0]
@@ -22,6 +22,9 @@ const JSONEditor = (props) => {
 
     const handleResponse = (event, response) => {
         setDarkModeData(response.darkmode);
+        setUserConfig(response);
+
+        ipcRenderer.removeListener('receive', handleResponse)
     };
 
     const handleFileContent = (event, content) => {

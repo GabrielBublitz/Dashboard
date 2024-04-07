@@ -6,10 +6,13 @@ import { useData } from './Context/DataContext.jsx';
 const { ipcRenderer } = window.require('electron');
 
 const App = () => {
-  const { darkMode, setDarkModeData } = useData();
+  const { darkMode, setDarkModeData, setUserConfig } = useData();
 
   const handleResponse = (event, response) => {
+    setUserConfig(response);
     setDarkModeData(response.darkmode);
+
+    ipcRenderer.removeListener('receive', handleResponse);
   };
 
   ipcRenderer.on('receive', handleResponse);
@@ -17,23 +20,28 @@ const App = () => {
   useEffect(() => {
     ipcRenderer.send('read-file', './config.json');
 
-    ipcRenderer.on('file-content', (event, content) => {
+    const handleFileContent = (event, content) => {
       setDarkModeData(content.darkmode);
-    });
+      setUserConfig(content);
+
+      ipcRenderer.removeListener('file-content', handleFileContent);
+    }
+
+    ipcRenderer.on('file-content', handleFileContent);
+
   }, []);
 
   useEffect(() => {
     var body = document.querySelector('body');
     var modeText = document.querySelector('.mode-text')
 
-    if(darkMode){
+    if (darkMode) {
       body.classList.add('dark');
       modeText.innerText = 'Light Mode';
-    }else{
+    } else {
       body.classList.remove('dark');
       modeText.innerText = 'Dark Mode';
     }
-
   }, [darkMode]);
 
   return (

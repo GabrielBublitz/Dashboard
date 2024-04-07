@@ -2,11 +2,9 @@ import React, { useState, useEffect } from 'react';
 import DashContainer from '../Components/DashContainer.jsx';
 import { useData } from '../Context/DataContext.jsx';
 
-const { customers_services } = require('../../userConfig.json');
-
 const Home = () => {
     const [jsonConfig, setJsonConfig] = useState([]);
-    const { data, setDataAndNotify } = useData();
+    const { data, setDataAndNotify, userConfig } = useData();
 
     const handleUpdateData = () => {
         setDataAndNotify(!data);
@@ -14,15 +12,15 @@ const Home = () => {
 
     useEffect(() => {
         var json = [];
-
-        customers_services.map((item) => {
+        
+        userConfig.customers_services.map((item) => {
             json.push(item);
         });
 
         setJsonConfig(json);
 
         return () => { };
-    }, []);
+    }, [userConfig]);
 
     return (
         <section className='home main-container'>
