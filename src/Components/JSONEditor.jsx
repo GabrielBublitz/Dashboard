@@ -1,42 +1,66 @@
 import React, { useState, useEffect } from 'react';
-const fs = window.require("fs")
-const userConfig = require('../../userConfig.json');
-
-document.getElementsByClassName('json-editor').value += JSON.stringify(userConfig)
+const { ipcRenderer } = window.require('electron');
+import { useData } from '../Context/DataContext.jsx';
 
 const JSONEditor = (props) => {
-    const [jsonData, setJsonData] = useState(userConfig);
-
-    const updateJsonData = (newData) => {
-        setJsonData(newData);
-    };
+    const { darkMode, setDarkModeData, setUserConfig } = useData();
 
     const handleJsonChange = () => {
-        if (document.getElementsByClassName('json-editor')[0].value) {
-            try {
-                const newData = JSON.parse(document.getElementsByClassName('json-editor')[0].value);
-                updateJsonData(newData);
+        var jsonEditor = document.getElementsByClassName('json-editor')[0]
 
-                fs.writeFile('userConfig.json', JSON.stringify(newData, null, 2), 'utf8', (err) => {
-                    if (err) {
-                        console.error('Erro ao salvar o arquivo JSON:', err);
-                    } else {
-                        console.log('Arquivo JSON atualizado com sucesso.');
-                    }
-                });
+        if (jsonEditor.value) {
+            try {
+                const newData = JSON.parse(jsonEditor.value);
+
+                ipcRenderer.send('write-file', { filePath: './config.json', content: newData });
+
             } catch (error) {
                 console.error('Erro ao analisar o JSON:', error);
             }
         }
     };
 
+    const handleResponse = (event, response) => {
+        setDarkModeData(response.darkmode);
+        setUserConfig(response);
+
+        ipcRenderer.removeListener('receive', handleResponse)
+    };
+
+    const handleFileContent = (event, content) => {
+        var jsonEditor = document.getElementsByClassName('json-editor')[0];
+        jsonEditor.value = JSON.stringify(content, null, 2, 'utf8');
+
+        ipcRenderer.removeListener('file-content', handleFileContent);
+    }
+
+    const loadEditorContent = () => {
+        ipcRenderer.send('read-file', './config.json');
+
+        ipcRenderer.on('file-content', handleFileContent);
+    }
+
     useEffect(() => {
         handleJsonChange();
+
+        ipcRenderer.on('receive', handleResponse);
     }, [props.save]);
 
     useEffect(() => {
-        document.getElementsByClassName('json-editor')[0].value = JSON.stringify(jsonData, null, 2, 'utf8');
-    }, [jsonData]);
+        loadEditorContent();
+    }, [darkMode]);
+
+    useEffect(() => {
+        var jsonEditor = document.getElementsByClassName('json-editor')[0];
+
+        loadEditorContent();
+
+        return () => {
+            ipcRenderer.removeListener('file-content', (event, content) => {
+                jsonEditor.value = JSON.stringify(content, null, 2, 'utf8');
+            })
+        }
+    }, []);
 
     return (
         <div className='editor-container'>

@@ -1,25 +1,48 @@
 import React, { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 import Navbar from './Components/Navbar.jsx';
-const config = require('../userConfig.json');
+import { useData } from './Context/DataContext.jsx';
+
+const { ipcRenderer } = window.require('electron');
 
 const App = () => {
+  const { darkMode, setDarkModeData, setUserConfig } = useData();
+
+  const handleResponse = (event, response) => {
+    setUserConfig(response);
+    setDarkModeData(response.darkmode);
+
+    ipcRenderer.removeListener('receive', handleResponse);
+  };
+
+  ipcRenderer.on('receive', handleResponse);
 
   useEffect(() => {
-    if (config.darkmode) {
-      var body = document.querySelector('body');
+    ipcRenderer.send('read-file', './config.json');
 
-      body.classList.add('dark');
+    const handleFileContent = (event, content) => {
+      setDarkModeData(content.darkmode);
+      setUserConfig(content);
 
-      if (body.classList.contains('dark')) {
-        document.querySelector('.mode-text').innerText = 'Light Mode';
-      } else {
-        document.querySelector('.mode-text').innerText = 'Dark Mode';
-      }
+      ipcRenderer.removeListener('file-content', handleFileContent);
     }
 
-    return () => { };
+    ipcRenderer.on('file-content', handleFileContent);
+
   }, []);
+
+  useEffect(() => {
+    var body = document.querySelector('body');
+    var modeText = document.querySelector('.mode-text')
+
+    if (darkMode) {
+      body.classList.add('dark');
+      modeText.innerText = 'Light Mode';
+    } else {
+      body.classList.remove('dark');
+      modeText.innerText = 'Dark Mode';
+    }
+  }, [darkMode]);
 
   return (
     <div>

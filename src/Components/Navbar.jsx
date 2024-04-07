@@ -1,11 +1,13 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import logo from '../Images/logo.png';
+import { useData } from '../Context/DataContext.jsx';
 
-const fs = window.require("fs")
-const userConfig = require('../../userConfig.json');
+const { ipcRenderer } = window.require('electron');
+
 
 const Navbar = () => {
+  const { darkMode } = useData();
 
   const toggle = () => {
     document.querySelector('.sidebar').classList.toggle('close');
@@ -14,24 +16,21 @@ const Navbar = () => {
   const searchBtn = () => {
     document.querySelector('.sidebar').classList.remove('close');
   }
-  
-//#region DarkMode
-  const toggleDarkMode = () => {
-    userConfig.darkmode = !userConfig.darkmode;
 
-    try{
-      fs.writeFile('userConfig.json', JSON.stringify(userConfig, null, 2), 'utf8', (err) => {
-        if (err) {
-            console.error('Erro ao salvar o arquivo JSON:', err);
-        } else {
-            console.log('Arquivo JSON atualizado com sucesso.');
-        }
-    });
-    }catch(e){
-      console.error('Erro ao atualziar o userConfig:', error);
-    }
+  const handleFileContent = (event, response) => {
+    response.darkmode = !darkMode;
+
+    ipcRenderer.send('write-file', { filePath: './config.json', content: response });
+    ipcRenderer.removeListener('file-content', handleFileContent);
+  }
+
+  //#region DarkMode
+  const toggleDarkMode = () => {
+    ipcRenderer.send('read-file', './config.json');
+
+    ipcRenderer.on('file-content', handleFileContent);
   };
-//#endregion
+  //#endregion
 
   return (
     <nav className='sidebar close'>
@@ -69,7 +68,7 @@ const Navbar = () => {
                 <i className="icon">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="none"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1V5zM4 15a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-4zM4 5a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5zm8 10a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1h-6a1 1 0 0 1-1-1v-4z"></path></svg>
                 </i>
-                <span className='text nav-text'>Dashboard</span>
+                <span className='text nav-text'>Config</span>
               </NavLink>
             </li>
           </ul>
