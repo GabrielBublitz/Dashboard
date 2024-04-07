@@ -79,6 +79,7 @@ const Card = (props) => {
                         response_data.workers && Array.isArray(response_data.workers) ? ` ${response_data.workers.length}` : ' -'
                     }
                 </div>
+                <div className='white-text'>UnitsDone: {response_data.unitsDone || response_data.unitsDone == 0 ? `${response_data.unitsDone}` : ' -'}</div>
                 <div className='white-text'>Fails: {response_data.rogues || response_data.rogues == 0 ? `${response_data.rogues}` : ' -'}</div>
             </div>
         </div>
