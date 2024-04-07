@@ -4,8 +4,7 @@ import JSONEditor from '../Components/JSONEditor.jsx';
 const Config = () => {
     const [data, setData] = useState(false);
 
-    const SaveFile = (event) => {
-        event.preventDefault();
+    const SaveFile = () => {
         setData(!data);
     }
 

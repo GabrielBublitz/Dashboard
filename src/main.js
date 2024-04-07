@@ -111,12 +111,10 @@ const readFile = async (filePath) => {
 ipcMain.on('read-file', async (event, filePath) => {
   try {
     const content = await readFile(filePath);
+
     event.reply('file-content', JSON.parse(content));
-
   } catch (error) {
-
     console.error('Erro ao ler o arquivo:', error);
-
     event.reply('file-content', null);
   }
 });
@@ -127,7 +125,6 @@ ipcMain.on('write-file', async (event, request) => {
     var response = await loadConfig(request.filePath, request.content);
 
     event.reply('receive', response);
-
   } catch (e) {
     console.error("Erro: " + e);
   }
