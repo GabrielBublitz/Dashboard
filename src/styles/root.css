@@ -8,6 +8,7 @@
     --text-color: #707070;
     --card-text-color: #FFF;
     --default-component-color: #707070;
+    --default-boder-color:#695cfe;
 
     /* Transition */
     --tran-02: all 0.2s ease;
@@ -40,6 +41,7 @@ body.dark{
     --toggle-color: #FFF;
     --text-color: #CCC;
     --default-component-color: #3A3B3C;
+    --default-boder-color: #CCC;
     
     /* Buttons */
     --button-primary-color: #695cfe;

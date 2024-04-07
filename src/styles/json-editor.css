@@ -1,23 +1,25 @@
 .editor-container{
     height: 100%;
     padding: var(--padding-10);
+    transition: var(--tran-02);
 }
 
 .json-editor{
     color: var(--text-color);
     font-size: 14px;
     width: 100%;
+    height: 100%;
     border-color: var(--default-component-color);
     border-radius: 6px;
     padding: var(--padding-10);
     resize: none;
     overflow-y: scroll;
-    scrollbar-width: thin;
-    scrollbar-color: #888 #f0f0f0;
 }
 
 .json-editor:focus{
-    outline: none;
+    outline-width: 2px;
+    outline-color: var(--default-boder-color);
+    outline-style: solid;
 }
 
 .json-editor::-webkit-scrollbar {
