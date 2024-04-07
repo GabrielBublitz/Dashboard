@@ -1,53 +1,62 @@
 import React, { useState, useEffect } from 'react';
 const { ipcRenderer } = window.require('electron');
 import { useData } from '../Context/DataContext.jsx';
-// const userConfig = require('../../userConfig.json');
 
 const JSONEditor = (props) => {
-    const [jsonData, setJsonData] = useState({});
-    const { darkMode, setdarkModeData } = useData();
+    const { darkMode, setDarkModeData } = useData();
 
-    const updateJsonData = (newData) => {
-        setJsonData(newData);
-    };
+    const handleJsonChange = () => {
+        var jsonEditor = document.getElementsByClassName('json-editor')[0]
 
-    const handleUpdateTheme = (request) =>{
-        setdarkModeData(request.darkmode)
-        console.log(darkMode);
-    }
-
-    const handleJsonChange = (event) => {
-        if (document.getElementsByClassName('json-editor')[0].value) {
+        if (jsonEditor.value) {
             try {
-                const newData = JSON.parse(document.getElementsByClassName('json-editor')[0].value);
-                updateJsonData(newData);
-                setdarkModeData(newData.darkmode)
-            
-                ipcRenderer.send('write-file', { filePath: './userConfig.json', content: newData});
-                
-                // ipcRenderer.on('receive', (response) => {
-                //     setJsonData(response);
-                //     console.log('response');
-                // })
+                const newData = JSON.parse(jsonEditor.value);
+
+                ipcRenderer.send('write-file', { filePath: './config.json', content: newData });
+
             } catch (error) {
                 console.error('Erro ao analisar o JSON:', error);
             }
         }
     };
 
+    const handleResponse = (event, response) => {
+        setDarkModeData(response.darkmode);
+    };
+
+    const handleFileContent = (event, content) => {
+        var jsonEditor = document.getElementsByClassName('json-editor')[0];
+        jsonEditor.value = JSON.stringify(content, null, 2, 'utf8');
+
+        ipcRenderer.removeListener('file-content', handleFileContent);
+    }
+
+    const loadEditorContent = () => {
+        ipcRenderer.send('read-file', './config.json');
+
+        ipcRenderer.on('file-content', handleFileContent);
+    }
+
     useEffect(() => {
         handleJsonChange();
-        // // handleUpdateTheme();
-        // ipcRenderer.removeAllListeners();
-        console.log('a')
 
+        ipcRenderer.on('receive', handleResponse);
     }, [props.save]);
 
     useEffect(() => {
-        ipcRenderer.send('read-file', './userConfig.json');
-        ipcRenderer.on('file-content', (event, content) => {
-            document.getElementsByClassName('json-editor')[0].value = JSON.stringify(content, null, 2, 'utf8');
-        });
+        loadEditorContent();
+    }, [darkMode]);
+
+    useEffect(() => {
+        var jsonEditor = document.getElementsByClassName('json-editor')[0];
+
+        loadEditorContent();
+
+        return () => {
+            ipcRenderer.removeListener('file-content', (event, content) => {
+                jsonEditor.value = JSON.stringify(content, null, 2, 'utf8');
+            })
+        }
     }, []);
 
     return (

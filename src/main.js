@@ -26,9 +26,9 @@ const createWindow = () => {
 
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
 
-  // if (isDev) {
+  if (isDev) {
     mainWindow.webContents.openDevTools();
-  // }
+  }
 
   ipcMain.on("close", () => {
     const window = BrowserWindow.getFocusedWindow();
@@ -58,10 +58,11 @@ const createWindow = () => {
   });
 };
 
-const loadConfig = async (filePath, content) =>{
+const loadConfig = async (filePath, content) => {
   try {
     await fs.promises.writeFile(filePath, JSON.stringify(content, null, 2), 'utf8');
-    return config;
+
+    return content;
   } catch (error) {
     console.error('Erro ao salvar o arquivo JSON:', err);
   }
@@ -72,7 +73,7 @@ const loadConfig = async (filePath, content) =>{
 // Some APIs can only be used after this event occurs.
 app.on('ready', () => {
   createWindow();
-  loadConfig('./userConfig.json', config);
+  loadConfig('./config.json', config);
 });
 
 app.on('window-all-closed', () => {
@@ -94,22 +95,27 @@ const fs = require('fs');
 ipcMain.on('read-file', async (event, filePath) => {
   try {
     const content = await fs.promises.readFile(filePath, 'utf-8');
+    
     event.reply('file-content', JSON.parse(content));
+
   } catch (error) {
+
     console.error('Erro ao ler o arquivo:', error);
+
     event.reply('file-content', null);
   }
 });
 
 
 ipcMain.on('write-file', async (event, request) => {
-  try{
-    var response = await loadConfig(request.filePath, request.content)
+  try {
+    var response = await loadConfig(request.filePath, request.content);
+
     event.reply('receive', response);
-  }catch(e){
-    console.log("Erro: " + e);
+    
+  } catch (e) {
+    console.error("Erro: " + e);
   }
-  
 });
 
 const axios = require('axios');

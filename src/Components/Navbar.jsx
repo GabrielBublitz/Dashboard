@@ -1,11 +1,13 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import logo from '../Images/logo.png';
+import { useData } from '../Context/DataContext.jsx';
 
-const fs = window.require("fs")
-const userConfig = require('../../userConfig.json');
+const { ipcRenderer } = window.require('electron');
+
 
 const Navbar = () => {
+  const { setDarkModeData } = useData();
 
   const toggle = () => {
     document.querySelector('.sidebar').classList.toggle('close');
@@ -14,24 +16,21 @@ const Navbar = () => {
   const searchBtn = () => {
     document.querySelector('.sidebar').classList.remove('close');
   }
-  
-//#region DarkMode
-  const toggleDarkMode = () => {
-    userConfig.darkmode = !userConfig.darkmode;
 
-    try{
-      fs.writeFile('userConfig.json', JSON.stringify(userConfig, null, 2), 'utf8', (err) => {
-        if (err) {
-            console.error('Erro ao salvar o arquivo JSON:', err);
-        } else {
-            console.log('Arquivo JSON atualizado com sucesso.');
-        }
-    });
-    }catch(e){
-      console.error('Erro ao atualziar o userConfig:', error);
-    }
+  const handleFileContent = (event, response) => {
+    response.darkmode = !response.darkmode;
+    ipcRenderer.send('write-file', { filePath: './config.json', content: response });
+
+    ipcRenderer.removeListener('file-content', handleFileContent);
+  }
+
+  //#region DarkMode
+  const toggleDarkMode = () => {
+    ipcRenderer.send('read-file', './config.json');
+
+    ipcRenderer.on('file-content', handleFileContent);
   };
-//#endregion
+  //#endregion
 
   return (
     <nav className='sidebar close'>
