@@ -2,7 +2,7 @@
   "darkmode": true,
   "customers_services": [
     {
-      "company": "Empresa 1",
+      "company": "Empresa 2",
       "portal": "link 1",
       "web_service": "link 2",
       "services_base_url": "http://localhost:",
