@@ -70,7 +70,7 @@ const loadConfig = async (filePath, content) => {
   }
 }
 
-function validateConfigFileExist(caminho) {
+function validateFileExist(caminho) {
   try {
     fs.accessSync(caminho, fs.constants.F_OK);
     return true;
@@ -84,7 +84,7 @@ function validateConfigFileExist(caminho) {
 // Some APIs can only be used after this event occurs.
 app.on('ready', () => {
   createWindow();
-  hasFile = validateConfigFileExist('./config.json');
+  hasFile = validateFileExist('./config.json');
   if (!hasFile) {
     loadConfig('./config.json', config);
   }
@@ -126,7 +126,7 @@ ipcMain.on('write-file', async (event, request) => {
 
     event.reply('receive', response);
   } catch (e) {
-    console.error("Erro: " + e);
+    event.reply('write-file-error', { message: 'Falha ao registrar config.', error: e });
   }
 });
 
@@ -150,3 +150,37 @@ ipcMain.on('fetch-data', async (event, request) => {
     );
   }
 });
+
+ipcMain.on('log-error', async (event, request) => {
+  try {
+    var response = await logError(request.filePath, request.content);
+
+    event.reply('log', response);
+  } catch (e) {
+    event.reply('write-file-error', { message: 'Falha ao registrar config.', error: e });
+  }
+});
+
+const logError = async (filePath, content) => {
+  try {
+    const dataAtual = new Date();
+    const fusoHorarioSP = 'America/Sao_Paulo';
+    const opcoesFormato = {
+      timeZone: fusoHorarioSP,
+      hour12: false, // Usar formato de 24 horas
+    };
+
+    if (validateFileExist(filePath)) {
+      var fileConent = await readFile(filePath);
+
+      var updateConent = fileConent + `\n--- ${dataAtual.toLocaleString('pt-BR', opcoesFormato).replace(/ [A-Z]{3}$/, '')}\n` + content + '\n';
+
+      await fs.promises.writeFile(filePath, updateConent, 'utf-8');
+    } else {
+
+      await fs.promises.writeFile(filePath,`\n--- ${dataAtual.toLocaleString('pt-BR', opcoesFormato).replace(/ [A-Z]{3}$/, '')}\n` + content + '\n', 'utf-8');
+    }
+  } catch (error) {
+    console.error('Erro ao salvar o arquivo JSON:', error);
+  }
+}

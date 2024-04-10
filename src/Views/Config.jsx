@@ -12,7 +12,7 @@ const Config = () => {
     }
 
     return (
-        <section className='home'>
+        <section className='home'> 
             <div className='container-header'>
                 <div className='text'>Editor JSON</div>
                 <button className='btn button-primary' onClick={SaveFile}>Save</button>
