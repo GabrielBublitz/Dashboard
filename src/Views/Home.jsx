@@ -1,39 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import DashContainer from '../Components/DashContainer.jsx';
+import Header from '../Components/Header.jsx';
 import { useData } from '../Context/DataContext.jsx';
+import { DataProvider } from '../Context/DataRefresh.jsx';
 
-const Home = () => {
-    const [jsonConfig, setJsonConfig] = useState([]);
-    const { data, setDataAndNotify, userConfig } = useData();
-
-    const handleUpdateData = () => {
-        setDataAndNotify(!data);
-    };
-
-    useEffect(() => {
-        var json = [];
-        
-        userConfig.customers_services.map((item) => {
-            json.push(item);
-        });
-
-        setJsonConfig(json);
-
-        return () => { };
-    }, [userConfig]);
+const Home = React.memo(() => {
+    const { userConfig } = useData();
 
     return (
         <section className='home main-container'>
-            <div className='container-header'>
-                <div className='text'>Home</div>
-                <button className='btn button-primary' onClick={handleUpdateData}>Refresh</button>
-            </div>
-            <div className='container'>
-                {jsonConfig.map((item, index) => (
-                    <DashContainer key={index} name={item.company} base_url={item.services_base_url} services={item.services_mw} />
-                ))}
-            </div>
+            <DataProvider>
+                <Header name={'Home'} updateData={true} />
+                <div className='container'>
+                    {userConfig && userConfig.customers_services.map((item, index) => (
+                        <DashContainer key={index} name={item.company} base_url={item.services_base_url} services={item.services_mw} />
+                    ))}
+                </div>
+            </DataProvider>
         </section>);
-};
+});
 
 export default Home;

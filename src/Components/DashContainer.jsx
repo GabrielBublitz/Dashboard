@@ -12,6 +12,6 @@ const DashContainer = (props) => {
             </div>
         </div>
     );
-}
+};
 
 export default DashContainer;

@@ -2,6 +2,7 @@ const { app, BrowserWindow, ipcMain } = require('electron');
 const isDev = process.env.NODE_ENV !== "production";
 const config = require('../userConfig.json')
 const fs = require('fs');
+const axios = require('axios');
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -71,10 +72,10 @@ const loadConfig = async (filePath, content) => {
 
 function validateConfigFileExist(caminho) {
   try {
-      fs.accessSync(caminho, fs.constants.F_OK);
-      return true;
+    fs.accessSync(caminho, fs.constants.F_OK);
+    return true;
   } catch (err) {
-      return false;
+    return false;
   }
 }
 
@@ -84,7 +85,7 @@ function validateConfigFileExist(caminho) {
 app.on('ready', () => {
   createWindow();
   hasFile = validateConfigFileExist('./config.json');
-  if(!hasFile){
+  if (!hasFile) {
     loadConfig('./config.json', config);
   }
 });
@@ -119,7 +120,6 @@ ipcMain.on('read-file', async (event, filePath) => {
   }
 });
 
-
 ipcMain.on('write-file', async (event, request) => {
   try {
     var response = await loadConfig(request.filePath, request.content);
@@ -130,13 +130,23 @@ ipcMain.on('write-file', async (event, request) => {
   }
 });
 
-const axios = require('axios');
-
 ipcMain.on('fetch-data', async (event, request) => {
   try {
     const response = await axios.get(request.url);
-    event.reply('data-fetched', { 'data': response.data, 'status': response.status, 'identifier': request.url });
+    event.reply('data-fetched',
+      {
+        data: response.data,
+        status: response.status,
+        identifier: request.url
+      }
+    );
   } catch (error) {
-    event.reply('fetch-error', { satus: 400, errorMessage: error.message });
+    event.reply('fetch-error',
+      {
+        satus: 400,
+        errorMessage: error.message,
+        identifier: request.url
+      }
+    );
   }
 });

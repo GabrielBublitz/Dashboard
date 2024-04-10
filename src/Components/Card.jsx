@@ -1,13 +1,68 @@
 import React, { useState, useEffect } from 'react';
-import { useData } from '../Context/DataContext.jsx';
-
+import { useDataRefresh } from '../Context/DataRefresh.jsx';
 const { ipcRenderer } = window.require('electron');
 
 const Card = (props) => {
     const [cardData] = useState(props.server);
     const [service_response, setResponse] = useState({});
     const [response_data, setResponseData] = useState({});
-    const { data } = useData();
+    const [interval, setIntervalData] = useState(null);
+    const { data } = useDataRefresh();
+
+    const fetchData = () => {
+        ipcRenderer.send('fetch-data', {
+            url: cardData.url
+        });
+    }
+
+    const handleDataReceived = (event, response) => {
+        if (response.identifier === cardData.url) {
+            if (response) {
+                setResponse(response);
+                if (response.data && response.data.length > 0) {
+                    setResponseData(response.data[0]);
+                }
+                else if (response.status !== 200) {
+                    setResponseData({})
+                }
+            }
+        }
+    };
+
+    const handleError = (event, response) => {
+        if (response.identifier === cardData.url) {
+            if (response) {
+                setResponse(response);
+                if (response.data && response.data.length > 0) {
+                    setResponseData(response.data[0]);
+                }
+                else if (response.status !== 200) {
+                    setResponseData({})
+                }
+            }
+        }
+    }
+
+    useEffect(() => {
+        setIntervalData(setInterval(fetchData, 10000));
+
+        ipcRenderer.addListener('data-fetched', handleDataReceived);
+
+        ipcRenderer.addListener('fetch-error', handleError);
+
+        return () => {
+            clearInterval(interval);
+            setIntervalData(null);
+            ipcRenderer.removeListener('data-fetched', handleDataReceived);
+            ipcRenderer.removeListener('fetch-error', handleError);
+        };
+    }, []);
+
+    useEffect(() => {
+        fetchData();
+        clearInterval(interval);
+        setIntervalData(null);
+    }, [data])
 
     function GetStatus() {
         var className = 'card ';
@@ -27,47 +82,10 @@ const Card = (props) => {
             return className;
         }
 
-        className += service_response.status === 200 ? 'ok' : 'card';
+        className += service_response.status === 200 ? 'ok' : 'error';
 
         return className;
     }
-
-    function fetchData() {
-        ipcRenderer.send('fetch-data', {
-            url: cardData.url
-        });
-    }
-
-    useEffect(() => {
-        const interval = setInterval(fetchData, 60000);
-
-        const handleDataReceived = (event, response) => {
-            if (response.identifier === cardData.url) {
-                setResponse(response);
-            }
-        };
-
-        const handleError = (event, response) => {
-            setResponse(response);
-        }
-
-        fetchData();
-
-        ipcRenderer.on('data-fetched', handleDataReceived);
-
-        ipcRenderer.on('fetch-error', handleError);
-
-        return () => {
-            ipcRenderer.removeListener('data-fetched', handleDataReceived);
-            clearInterval(interval);
-        };
-    }, [cardData, data]);
-
-    useEffect(() => {
-        if (service_response.data && service_response.data.length > 0) {
-            setResponseData(service_response.data[0]);
-        }
-    }, [service_response]);
 
     return (
         <div className={GetStatus()}>
