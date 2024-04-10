@@ -4,6 +4,7 @@ const config = require('../userConfig.json')
 const fs = require('fs');
 const axios = require('axios');
 
+//#region App
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
   app.quit();
@@ -60,25 +61,6 @@ const createWindow = () => {
   });
 };
 
-const loadConfig = async (filePath, content) => {
-  try {
-    await fs.promises.writeFile(filePath, JSON.stringify(content, null, 2), 'utf8');
-
-    return content;
-  } catch (error) {
-    console.error('Erro ao salvar o arquivo JSON:', err);
-  }
-}
-
-function validateFileExist(caminho) {
-  try {
-    fs.accessSync(caminho, fs.constants.F_OK);
-    return true;
-  } catch (err) {
-    return false;
-  }
-}
-
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
@@ -104,6 +86,27 @@ app.on('activate', () => {
   }
 });
 
+//#endregion
+
+const loadConfig = async (filePath, content) => {
+  try {
+    await fs.promises.writeFile(filePath, JSON.stringify(content, null, 2), 'utf8');
+
+    return content;
+  } catch (error) {
+    console.error('Erro ao salvar o arquivo JSON:', err);
+  }
+}
+
+function validateFileExist(caminho) {
+  try {
+    fs.accessSync(caminho, fs.constants.F_OK);
+    return true;
+  } catch (err) {
+    return false;
+  }
+}
+
 const readFile = async (filePath) => {
   const content = await fs.promises.readFile(filePath, 'utf-8');
   return content;
@@ -126,7 +129,7 @@ ipcMain.on('write-file', async (event, request) => {
 
     event.reply('receive', response);
   } catch (e) {
-    event.reply('write-file-error', { message: 'Falha ao registrar config.', error: e });
+    event.reply('write-file-error', { message: 'Falha ao registrar config', error: e });
   }
 });
 
@@ -145,6 +148,7 @@ ipcMain.on('fetch-data', async (event, request) => {
       {
         satus: 400,
         errorMessage: error.message,
+        stack: error.stack,
         identifier: request.url
       }
     );
@@ -153,9 +157,8 @@ ipcMain.on('fetch-data', async (event, request) => {
 
 ipcMain.on('log-error', async (event, request) => {
   try {
-    var response = await logError(request.filePath, request.content);
+    await logError(request.filePath, request.content);
 
-    event.reply('log', response);
   } catch (e) {
     event.reply('write-file-error', { message: 'Falha ao registrar config.', error: e });
   }
@@ -167,20 +170,12 @@ const logError = async (filePath, content) => {
     const fusoHorarioSP = 'America/Sao_Paulo';
     const opcoesFormato = {
       timeZone: fusoHorarioSP,
-      hour12: false, // Usar formato de 24 horas
+      hour12: false,
     };
+    const formatedDate = dataAtual.toLocaleString('pt-BR', opcoesFormato).replace(/ [A-Z]{3}$/, '');
 
-    if (validateFileExist(filePath)) {
-      var fileConent = await readFile(filePath);
-
-      var updateConent = fileConent + `\n--- ${dataAtual.toLocaleString('pt-BR', opcoesFormato).replace(/ [A-Z]{3}$/, '')}\n` + content + '\n';
-
-      await fs.promises.writeFile(filePath, updateConent, 'utf-8');
-    } else {
-
-      await fs.promises.writeFile(filePath,`\n--- ${dataAtual.toLocaleString('pt-BR', opcoesFormato).replace(/ [A-Z]{3}$/, '')}\n` + content + '\n', 'utf-8');
-    }
+    await fs.promises.appendFile(filePath, `\n--- ${formatedDate}\n` + content + '\n');
   } catch (error) {
-    console.error('Erro ao salvar o arquivo JSON:', error);
+    console.error('Erro ao salvar o arquivo JSON: ', error);
   }
-}
+};

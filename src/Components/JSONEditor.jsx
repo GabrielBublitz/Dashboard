@@ -59,7 +59,7 @@ const JSONEditor = (props) => {
             ipcRenderer.removeListener('file-content', (event, content) => {
                 jsonEditor.value = JSON.stringify(content, null, 2, 'utf8');
             });
-            console.log('save')
+
             ipcRenderer.on('write-file-error', handleError);
         }
     }, [props.save]);

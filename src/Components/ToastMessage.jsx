@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useToast } from '../Context/ToastContext.jsx';
 
 const ToastMessage = ({ message, show, type }) => {
@@ -11,7 +11,7 @@ const ToastMessage = ({ message, show, type }) => {
         if(show == true){
             const timeout = setTimeout(() => {
                 showToast(false, '', '');
-            }, 5000); // Oculta o toast após 5 segundos
+            }, 5000);
 
             const animation = setTimeout(() => {
                 document.querySelector('.toast').classList.add('hide');
