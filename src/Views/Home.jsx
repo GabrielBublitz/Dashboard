@@ -17,6 +17,9 @@ const Home = React.memo(() => {
                     ))}
                 </div>
             </DataProvider>
+            {/* <div className="toast">
+          <span>teste</span>
+        </div> */}
         </section>);
 });
 

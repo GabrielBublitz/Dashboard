@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import JSONEditor from '../Components/JSONEditor.jsx';
+import { useToast } from '../Context/ToastContext.jsx';
 
 const Config = () => {
     const [data, setData] = useState(false);
+    const { showToast } = useToast();
 
     const SaveFile = () => {
         setData(!data);
+        showToast(true, 'Atualizado com sucesso', 'ok');
     }
 
     return (

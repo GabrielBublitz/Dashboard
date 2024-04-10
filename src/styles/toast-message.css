@@ -1,0 +1,16 @@
+.toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    /* background-color: rgba(0, 0, 0, 1); */
+    color: var(--card-text-color);
+    padding: 10px 20px;
+    border-radius: 5px;
+    z-index: 1000;
+    transition: var(--tran-03);
+  }
+
+.toast.hide{
+  opacity: 0;
+  transition: var(--tran-03);
+}
