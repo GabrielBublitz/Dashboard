@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { memo } from 'react';
 import DashContainer from '../Components/DashContainer.jsx';
 import Header from '../Components/Header.jsx';
 import { useData } from '../Context/DataContext.jsx';
 import { DataProvider } from '../Context/DataRefresh.jsx';
 
-const Home = React.memo(() => {
+const Home = () => {
     const { userConfig } = useData();
 
     return (
@@ -18,6 +18,6 @@ const Home = React.memo(() => {
                 </div>
             </DataProvider>
         </section>);
-});
+};
 
-export default Home;
+export default memo(Home);

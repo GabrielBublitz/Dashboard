@@ -6,6 +6,7 @@ import Teste from './teste.jsx'
 import Home from './Views/Home.jsx'
 import Config from './Views/Config.jsx'
 import { DataProvider } from './Context/DataContext.jsx';
+import { ToastProvider } from './Context/ToastContext.jsx';
 
 const router = createHashRouter([
     {
@@ -27,6 +28,8 @@ const router = createHashRouter([
 const root = createRoot(document.getElementById("root"));
 root.render(
     <DataProvider>
-        <RouterProvider router={router} />
+        <ToastProvider>
+            <RouterProvider router={router} />
+        </ToastProvider>
     </DataProvider>
 );

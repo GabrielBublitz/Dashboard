@@ -3,9 +3,9 @@
 @import './styles/sidebar.css';
 @import './styles/home.css';
 @import './styles/dashboard.css';
+@import './styles/toast-message.css';
 @import './styles/status_card.css';
 @import './styles/json-editor.css';
-
 
 * {
 	font-family: 'Poppins', sans-serif;

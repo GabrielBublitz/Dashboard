@@ -4,6 +4,7 @@ const config = require('../userConfig.json')
 const fs = require('fs');
 const axios = require('axios');
 
+//#region App
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
   app.quit();
@@ -60,31 +61,12 @@ const createWindow = () => {
   });
 };
 
-const loadConfig = async (filePath, content) => {
-  try {
-    await fs.promises.writeFile(filePath, JSON.stringify(content, null, 2), 'utf8');
-
-    return content;
-  } catch (error) {
-    console.error('Erro ao salvar o arquivo JSON:', err);
-  }
-}
-
-function validateConfigFileExist(caminho) {
-  try {
-    fs.accessSync(caminho, fs.constants.F_OK);
-    return true;
-  } catch (err) {
-    return false;
-  }
-}
-
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', () => {
   createWindow();
-  hasFile = validateConfigFileExist('./config.json');
+  hasFile = validateFileExist('./config.json');
   if (!hasFile) {
     loadConfig('./config.json', config);
   }
@@ -103,6 +85,27 @@ app.on('activate', () => {
     createWindow();
   }
 });
+
+//#endregion
+
+const loadConfig = async (filePath, content) => {
+  try {
+    await fs.promises.writeFile(filePath, JSON.stringify(content, null, 2), 'utf8');
+
+    return content;
+  } catch (error) {
+    console.error('Erro ao salvar o arquivo JSON:', err);
+  }
+}
+
+function validateFileExist(caminho) {
+  try {
+    fs.accessSync(caminho, fs.constants.F_OK);
+    return true;
+  } catch (err) {
+    return false;
+  }
+}
 
 const readFile = async (filePath) => {
   const content = await fs.promises.readFile(filePath, 'utf-8');
@@ -126,7 +129,7 @@ ipcMain.on('write-file', async (event, request) => {
 
     event.reply('receive', response);
   } catch (e) {
-    console.error("Erro: " + e);
+    event.reply('write-file-error', { message: 'Falha ao registrar config', error: e });
   }
 });
 
@@ -145,8 +148,34 @@ ipcMain.on('fetch-data', async (event, request) => {
       {
         satus: 400,
         errorMessage: error.message,
+        stack: error.stack,
         identifier: request.url
       }
     );
   }
 });
+
+ipcMain.on('log-error', async (event, request) => {
+  try {
+    await logError(request.filePath, request.content);
+
+  } catch (e) {
+    event.reply('write-file-error', { message: 'Falha ao registrar config.', error: e });
+  }
+});
+
+const logError = async (filePath, content) => {
+  try {
+    const dataAtual = new Date();
+    const fusoHorarioSP = 'America/Sao_Paulo';
+    const opcoesFormato = {
+      timeZone: fusoHorarioSP,
+      hour12: false,
+    };
+    const formatedDate = dataAtual.toLocaleString('pt-BR', opcoesFormato).replace(/ [A-Z]{3}$/, '');
+
+    await fs.promises.appendFile(filePath, `\n--- ${formatedDate}\n` + content + '\n');
+  } catch (error) {
+    console.error('Erro ao salvar o arquivo JSON: ', error);
+  }
+};

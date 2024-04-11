@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 const { ipcRenderer } = window.require('electron');
 import { useData } from '../Context/DataContext.jsx';
+import { useToast } from '../Context/ToastContext.jsx';
 
 const JSONEditor = (props) => {
     const { darkMode, setDarkModeData, setUserConfig } = useData();
+    const { showToast } = useToast();
 
     const handleJsonChange = () => {
         var jsonEditor = document.getElementsByClassName('json-editor')[0]
@@ -34,6 +36,14 @@ const JSONEditor = (props) => {
         ipcRenderer.removeListener('file-content', handleFileContent);
     }
 
+    const handleError = (event, error) => {
+        console.log(error);
+        showToast(true, error.message, 'error'); 
+
+        ipcRenderer.send('log-error', {filePath: './log.txt', content: error.error.stack}); 
+        ipcRenderer.removeListener('write-file-error', handleError);
+    };
+
     const loadEditorContent = () => {
         ipcRenderer.send('read-file', './config.json');
 
@@ -44,6 +54,14 @@ const JSONEditor = (props) => {
         handleJsonChange();
 
         ipcRenderer.on('receive', handleResponse);
+
+        return () => {
+            ipcRenderer.removeListener('file-content', (event, content) => {
+                jsonEditor.value = JSON.stringify(content, null, 2, 'utf8');
+            });
+
+            ipcRenderer.on('write-file-error', handleError);
+        }
     }, [props.save]);
 
     useEffect(() => {
@@ -58,7 +76,9 @@ const JSONEditor = (props) => {
         return () => {
             ipcRenderer.removeListener('file-content', (event, content) => {
                 jsonEditor.value = JSON.stringify(content, null, 2, 'utf8');
-            })
+            });
+
+            ipcRenderer.on('write-file-error', handleError);
         }
     }, []);
 

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDataRefresh } from '../Context/DataRefresh.jsx';
+import { useToast } from '../Context/ToastContext.jsx';
+
 const { ipcRenderer } = window.require('electron');
 
 const Card = (props) => {
@@ -8,6 +10,7 @@ const Card = (props) => {
     const [response_data, setResponseData] = useState({});
     const [interval, setIntervalData] = useState(null);
     const { data } = useDataRefresh();
+    const { showToast } = useToast();
 
     const fetchData = () => {
         ipcRenderer.send('fetch-data', {
@@ -19,8 +22,8 @@ const Card = (props) => {
         if (response.identifier === cardData.url) {
             if (response) {
                 setResponse(response);
-                if (response.data && response.data.length > 0) {
-                    setResponseData(response.data[0]);
+                if (response.data) {
+                    setResponseData(response.data);
                 }
                 else if (response.status !== 200) {
                     setResponseData({})
@@ -33,11 +36,14 @@ const Card = (props) => {
         if (response.identifier === cardData.url) {
             if (response) {
                 setResponse(response);
-                if (response.data && response.data.length > 0) {
-                    setResponseData(response.data[0]);
+                if (response.data) {
+                    setResponseData(response.data);
                 }
                 else if (response.status !== 200) {
                     setResponseData({})
+                    showToast(true, `Falha ao carregar ${props.companyName}`, 'error'); 
+
+                    ipcRenderer.send('log-error', {filePath: './log.txt', content: `Company: ${props.companyName}\nMessage: ${response.errorMessage}\nStackTrace: ${response.stack}`}); 
                 }
             }
         }
@@ -66,6 +72,10 @@ const Card = (props) => {
 
     function GetStatus() {
         var className = 'card ';
+
+        if(Object.keys(service_response).length === 0){
+            return className;
+        }
 
         if (service_response.errorMessage) {
             className += 'error'

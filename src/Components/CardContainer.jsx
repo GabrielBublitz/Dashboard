@@ -14,7 +14,7 @@ const CardContainer = (props) => {
                         server: item
                     };
 
-                    return <Card key={index} server={item} />;
+                    return <Card key={index} server={item} serviceName={data.name} companyName={props.companyName} />;
                 })}
             </div>
         </div>
