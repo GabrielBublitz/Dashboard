@@ -73,6 +73,10 @@ const Card = (props) => {
     function GetStatus() {
         var className = 'card ';
 
+        if(Object.keys(service_response).length === 0){
+            return className;
+        }
+
         if (service_response.errorMessage) {
             className += 'error'
             return className;

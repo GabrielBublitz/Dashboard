@@ -14,7 +14,7 @@ const Config = () => {
     return (
         <section className='home'> 
             <div className='container-header'>
-                <div className='text'>Editor JSON</div>
+                <div className='text'>JSON Editor</div>
                 <button className='btn button-primary' onClick={SaveFile}>Save</button>
             </div>
             <JSONEditor save={data}/>
