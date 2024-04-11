@@ -64,6 +64,14 @@ const Navbar = () => {
               </NavLink>
             </li>
             <li className="nav-links">
+              <NavLink to="/dev">
+                <i className="icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="28px" height="28px" fill="none" viewBox="0 0 96 96" id="code-square"><path strokeLinecap="round" strokeWidth="5" d="M24 86H71C79.2843 86 86 79.2843 86 71V49V24C86 15.7157 79.2843 9 71 9H47.5H24C15.7157 9 9 15.7157 9 24V49V71C9 79.2843 15.7157 86 24 86Z"></path><path strokeLinecap="round" strokeWidth="5" d="M38.0264 36.75L29.0762 45.4686C27.6413 46.8664 27.6413 49.1328 29.0762 50.5306L38.0264 59.2492M57.9736 36.75L66.9238 45.4686C68.3587 46.8664 68.3587 49.1328 66.9238 50.5306L57.9736 59.2492"></path></svg>
+                </i>
+                <span className='text nav-text'>Dev</span>
+              </NavLink>
+            </li>
+            <li className="nav-links">
               <NavLink to="dashboard">
                 <i className="icon">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="none"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1V5zM4 15a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-4zM4 5a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5zm8 10a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1h-6a1 1 0 0 1-1-1v-4z"></path></svg>
