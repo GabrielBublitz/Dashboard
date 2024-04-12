@@ -3,8 +3,8 @@
   "customers_services": [
     {
       "company": "Empresa 2",
-      "portal": "link 1",
-      "web_service": "link 2",
+      "portal": "-",
+      "web_service": "-",
       "services_base_url": "http://localhost:",
       "services_mw": [
         {
@@ -38,8 +38,8 @@
     },
     {
       "company": "Empresa 2",
-      "portal": "link 1",
-      "web_service": "link 2",
+      "portal": "-",
+      "web_service": "-",
       "services_base_url": "http://localhost:",
       "services_mw": [
         {
@@ -54,5 +54,23 @@
       ]
     }
   ],
-  "desenv_services": []
+  "desenv_services": [
+    {
+      "company": "Feat",
+      "portal": "-",
+      "web_service": "-",
+      "services_base_url": "http://localhost:",
+      "services_mw": [
+        {
+          "name": "Service",
+          "service_path": "/Service/status",
+          "servers": [
+            "a",
+            "b"
+          ],
+          "port": 3001
+        }
+      ]
+    }
+  ]
 }
