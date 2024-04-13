@@ -10,6 +10,7 @@
         {
           "name": "Service",
           "service_path": "/Service/status",
+          "alert_log": false,
           "servers": [
             "a",
             "b"
@@ -19,6 +20,7 @@
         {
           "name": "Service",
           "service_path": "/Service/status",
+          "alert_log": false,
           "servers": [
             "a",
             "b"
@@ -28,6 +30,7 @@
         {
           "name": "Service",
           "service_path": "/Service/status",
+          "alert_log": false,
           "servers": [
             "a",
             "b"
@@ -45,6 +48,7 @@
         {
           "name": "Service",
           "service_path": "/Service/status",
+          "alert_log": false,
           "servers": [
             "a",
             "b"
@@ -64,6 +68,7 @@
         {
           "name": "Service",
           "service_path": "/Service/status",
+          "alert_log": false,
           "servers": [
             "a",
             "b"
