@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React from 'react';
 import DashContainer from '../Components/DashContainer.jsx';
 import Header from '../Components/Header.jsx';
 import { useData } from '../Context/DataContext.jsx';
@@ -20,4 +20,4 @@ const Home = () => {
         </section>);
 };
 
-export default memo(Home);
+export default Home;

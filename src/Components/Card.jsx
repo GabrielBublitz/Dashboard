@@ -8,14 +8,17 @@ const Card = (props) => {
     const [cardData] = useState(props.server);
     const [service_response, setResponse] = useState({});
     const [response_data, setResponseData] = useState({});
-    const [interval, setIntervalData] = useState(null);
     const { data } = useDataRefresh();
     const { showToast } = useToast();
 
     const fetchData = () => {
         ipcRenderer.send('fetch-data', {
-            url: cardData.url
+            url: cardData.url,
+            index: cardData.index
         });
+
+        ipcRenderer.on(cardData.url + cardData.index, handleDataReceived);
+        ipcRenderer.on(cardData.url + 'error' + cardData.index, handleError);
     }
 
     const handleDataReceived = (event, response) => {
@@ -30,6 +33,9 @@ const Card = (props) => {
                 }
             }
         }
+
+        ipcRenderer.removeListener(cardData.url + cardData.index, handleDataReceived);
+        ipcRenderer.removeListener(cardData.url + 'error' + cardData.index, handleError);
     };
 
     const handleError = (event, response) => {
@@ -41,39 +47,35 @@ const Card = (props) => {
                 }
                 else if (response.status !== 200) {
                     setResponseData({})
-                    showToast(true, `Falha ao carregar ${props.companyName}`, 'error'); 
 
-                    ipcRenderer.send('log-error', {filePath: './log.txt', content: `Company: ${props.companyName}\nMessage: ${response.errorMessage}\nStackTrace: ${response.stack}`}); 
+                    if (cardData.alertLog) {
+                        showToast(true, `Falha ao carregar ${props.companyName}`, 'error');
+
+                        ipcRenderer.send('log-error', { filePath: './log.txt', content: `Company: ${props.companyName}\nMessage: ${response.errorMessage}\nStackTrace: ${response.stack}` });
+                    }
                 }
             }
         }
+
+        ipcRenderer.removeListener(cardData.url + cardData.index, handleDataReceived);
+        ipcRenderer.removeListener(cardData.url + 'error' + cardData.index, handleError);
     }
 
     useEffect(() => {
-        setIntervalData(setInterval(fetchData, 10000));
-
-        ipcRenderer.addListener('data-fetched', handleDataReceived);
-
-        ipcRenderer.addListener('fetch-error', handleError);
+        fetchData();
+        const newInterval = setInterval(fetchData, 10000);
 
         return () => {
-            clearInterval(interval);
-            setIntervalData(null);
-            ipcRenderer.removeListener('data-fetched', handleDataReceived);
-            ipcRenderer.removeListener('fetch-error', handleError);
+            clearInterval(newInterval);
+            ipcRenderer.removeListener(cardData.url + cardData.index, handleDataReceived);
+            ipcRenderer.removeListener(cardData.url + 'error' + cardData.index, handleError);
         };
-    }, []);
-
-    useEffect(() => {
-        fetchData();
-        clearInterval(interval);
-        setIntervalData(null);
-    }, [data])
+    }, [data]);
 
     function GetStatus() {
         var className = 'card ';
 
-        if(Object.keys(service_response).length === 0){
+        if (Object.keys(service_response).length === 0) {
             return className;
         }
 

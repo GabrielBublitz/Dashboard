@@ -136,7 +136,8 @@ ipcMain.on('write-file', async (event, request) => {
 ipcMain.on('fetch-data', async (event, request) => {
   try {
     const response = await axios.get(request.url);
-    event.reply('data-fetched',
+
+    event.reply(request.url + request.index,
       {
         data: response.data,
         status: response.status,
@@ -144,7 +145,7 @@ ipcMain.on('fetch-data', async (event, request) => {
       }
     );
   } catch (error) {
-    event.reply('fetch-error',
+    event.reply(request.url + 'error' + request.index,
       {
         satus: 400,
         errorMessage: error.message,
