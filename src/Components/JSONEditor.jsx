@@ -39,13 +39,13 @@ const JSONEditor = (props) => {
         jsonSemHTML = jsonSemHTML.trim();
         jsonEditor.value = JSON.parse(jsonSemHTML);
 
-        ipcRenderer.removeListener('file-content', handleFileContent); 
+        ipcRenderer.removeListener('file-content', handleFileContent);
     }
 
     const handleError = (event, error) => {
         showToast(true, error.message, 'error');
 
-        ipcRenderer.send('log-error', { filePath: './log.txt', content: error.error.stack });
+        ipcRenderer.send('log-error', { content: error.error.stack });
         ipcRenderer.removeListener('write-file-error', handleError);
     };
 
@@ -57,7 +57,7 @@ const JSONEditor = (props) => {
 
     function colorizeJSON(jsonObj, indentLevel = 0) {
         const indent = '&nbsp;&nbsp;&nbsp;&nbsp;'.repeat(indentLevel);
-    
+
         if (typeof jsonObj === 'object') {
             if (Array.isArray(jsonObj)) {
                 let result = `${indent}<span style="color: #d6cc3c;">[</span><br>`;
@@ -125,7 +125,7 @@ const JSONEditor = (props) => {
 
     return (
         <div className='editor-container'>
-            <div className='json-editor white-text' contentEditable='true'/>
+            <div className='json-editor white-text' contentEditable='true' />
         </div>
     );
 };

@@ -1,8 +1,11 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const isDev = process.env.NODE_ENV !== "production";
-const config = require('../userConfig.json')
+const config = require('../userConfig.json');
 const fs = require('fs');
+const path = require('path');
 const axios = require('axios');
+const logFolderPath = './logs/';
+
 
 //#region App
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
@@ -10,7 +13,7 @@ if (require('electron-squirrel-startup')) {
   app.quit();
 }
 
-const createWindow = () => {
+const CreateWindow = () => {
   const mainWindow = new BrowserWindow({
     width: 1280,
     minWidth: 1280,
@@ -65,11 +68,18 @@ const createWindow = () => {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', () => {
-  createWindow();
-  hasFile = validateFileExist('./config.json');
+  CreateWindow();
+
+  let hasFile = ValidateFileExist('./config.json');
   if (!hasFile) {
-    loadConfig('./config.json', config);
+    LoadConfig('./config.json', config);
   }
+
+  if (!ValidateFileExist(logFolderPath)) {
+    fs.promises.mkdir(logFolderPath);
+  }
+
+  ClearOldLogs();
 });
 
 app.on('window-all-closed', () => {
@@ -82,13 +92,13 @@ app.on('activate', () => {
   // On OS X it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
   if (BrowserWindow.getAllWindows().length === 0) {
-    createWindow();
+    CreateWindow();
   }
 });
 
 //#endregion
 
-const loadConfig = async (filePath, content) => {
+const LoadConfig = async (filePath, content) => {
   try {
     await fs.promises.writeFile(filePath, JSON.stringify(content, null, 2), 'utf8');
 
@@ -98,23 +108,23 @@ const loadConfig = async (filePath, content) => {
   }
 }
 
-function validateFileExist(caminho) {
+function ValidateFileExist(filePath) {
   try {
-    fs.accessSync(caminho, fs.constants.F_OK);
+    fs.accessSync(filePath, fs.constants.F_OK);
     return true;
   } catch (err) {
     return false;
   }
 }
 
-const readFile = async (filePath) => {
+const ReadFile = async (filePath) => {
   const content = await fs.promises.readFile(filePath, 'utf-8');
   return content;
 };
 
 ipcMain.on('read-file', async (event, filePath) => {
   try {
-    const content = await readFile(filePath);
+    const content = await ReadFile(filePath);
 
     event.reply('file-content', JSON.parse(content));
   } catch (error) {
@@ -125,7 +135,7 @@ ipcMain.on('read-file', async (event, filePath) => {
 
 ipcMain.on('write-file', async (event, request) => {
   try {
-    var response = await loadConfig(request.filePath, request.content);
+    var response = await LoadConfig(request.filePath, request.content);
 
     event.reply('receive', response);
   } catch (e) {
@@ -158,25 +168,91 @@ ipcMain.on('fetch-data', async (event, request) => {
 
 ipcMain.on('log-error', async (event, request) => {
   try {
-    await logError(request.filePath, request.content);
+    await LogError(request.content);
 
   } catch (e) {
     event.reply('write-file-error', { message: 'Falha ao registrar config.', error: e });
   }
 });
 
-const logError = async (filePath, content) => {
+const LogError = async (content) => {
   try {
-    const dataAtual = new Date();
-    const fusoHorarioSP = 'America/Sao_Paulo';
-    const opcoesFormato = {
-      timeZone: fusoHorarioSP,
+    let filePath = await CreateLogFile();
+
+    let dataAtual = new Date();
+    let timeZoneSP = 'America/Sao_Paulo';
+    let formatOptions = {
+      timeZone: timeZoneSP,
       hour12: false,
     };
-    const formatedDate = dataAtual.toLocaleString('pt-BR', opcoesFormato).replace(/ [A-Z]{3}$/, '');
+    const formatedDate = dataAtual.toLocaleString('pt-BR', formatOptions).replace(/ [A-Z]{3}$/, '');
 
     await fs.promises.appendFile(filePath, `\n--- ${formatedDate}\n` + content + '\n');
   } catch (error) {
     console.error('Erro ao salvar o arquivo JSON: ', error);
   }
+};
+
+const CreateLogFile = async () => {
+  try {
+    let date = GetFormatedDate();
+    let logFilePath = `${logFolderPath}${date}.txt`;
+
+    if (!ValidateFileExist(logFilePath)) {
+      await fs.promises.writeFile(logFilePath, 'null', 'utf-8');
+    }
+
+    return logFilePath;
+  } catch (error) {
+    console.error('Erro ao criar arquivo de log: ', error);
+  }
+}
+
+const GetFormatedDate = () => {
+  let currentDate = new Date();
+
+  let day = currentDate.getDate();
+  let month = currentDate.getMonth();
+  let year = currentDate.getFullYear();
+
+  return `${day}-${month}-${year}`;
+};
+
+const ClearOldLogs = () => {
+  let currentDate = new Date();
+
+  //Calculate time for one weed ago: currentDate in ms - 7 (days) * 24 (to hours) * 60 (to minutes) * 60 (to seconds) * 1000 (to ms)
+  let weekAgoDate = new Date(currentDate.getTime() - 7 * 24 * 60 * 60 * 1000);
+
+  fs.readdir(logFolderPath, (error, files) => {
+    if (error) {
+      console.log('Erro ao limpar arquivos de log: \n', error);
+
+      return;
+    }
+
+    files.forEach(file => {
+      let filePath = path.join(logFolderPath, file);
+
+      fs.stat(filePath, (error, stats) => {
+        if (error) {
+          console.log(`Erro ao acessar status do arquivo de log: ${filePath}\n`, error);
+
+          return;
+        }
+
+        if (stats.mtime < weekAgoDate) {
+          fs.unlink(filePath, (error) => {
+            if (error) {
+              console.log(`Erro ao excluir arquivo de log: ${filePath} \n`, error);
+
+              return;
+            }
+
+            console.log(`Arquivo de log excluido: ${filePath} \n`);
+          });
+        }
+      });
+    });
+  });
 };

@@ -51,11 +51,10 @@ const Card = (props) => {
                     if (cardData.alertLog) {
                         showToast(true, `Falha ao carregar ${props.companyName}`, 'error');
 
-                        ipcRenderer.send('log-error', 
-                        { 
-                            filePath: './log.txt', 
-                            content: `Company: ${props.companyName}\nRequest: ${cardData.url}\nMessage: ${response.errorMessage}\nStackTrace: ${response.stack}` 
-                        });
+                        ipcRenderer.send('log-error',
+                            {
+                                content: `Company: ${props.companyName}\nRequest: ${cardData.url}\nMessage: ${response.errorMessage}\nStackTrace: ${response.stack}`
+                            });
                     }
                 }
             }
