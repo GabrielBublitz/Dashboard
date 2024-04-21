@@ -9,7 +9,7 @@ const CardContainer = (props) => {
         <div>
             <h2 className='padding-5'>{data.name}</h2>
             <div className='card-container'>
-                {data.servers.map((item, index) => {
+                {data.servers && data.servers.map((item, index) => {
                     let cardItem = new CardItem(
                         `${props.base_url}${data.port}${data.service_path}${item}`,
                         item,

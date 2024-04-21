@@ -7,7 +7,7 @@ const DashContainer = (props) => {
         <div className='dash-container'>
             <h1 className='dash-container-title'>{props.name}</h1>
             <div className="card-container padding-15">
-                {props.services.map((item, index) => {
+                {props.services && props.services.map((item, index) => {
                     return <CardContainer key={index} item={item} base_url={props.base_url} companyName={props.name} />;
                 })}
             </div>
