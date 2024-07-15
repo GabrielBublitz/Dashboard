@@ -31,6 +31,18 @@
     --button-text-color: #FFF;
     --button-primary-color: #695cfe;
     --button-primary-color-light: #463bc0;
+
+    /* Font */
+    --font-size-1: 8px;
+    --font-size-2: 10px;
+    --font-size-3: 12px;
+    --font-size-4: 14px;
+    --font-size-5: 16px;
+    --font-size-6: 18px;
+    --font-size-7: 20px;
+    --font-size-8: 22px;
+    --font-size-9: 24px;
+    --font-size-9: 26px;
 }
 
 body.dark{

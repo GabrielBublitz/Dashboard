@@ -13,7 +13,9 @@ const Home = () => {
                 <Header name={'Home'} updateData={true} />
                 <div className='container'>
                     {userConfig && userConfig.customers_services.map((item, index) => (
-                        <DashContainer key={index} name={item.company} base_url={item.services_base_url} services={item.services_mw} />
+                        item.enable === true && (
+                            <DashContainer key={index} name={item.company} base_url={item.services_base_url} services={item.services_mw} web_service={item.web_service} />
+                        )
                     ))}
                 </div>
             </DataProvider>

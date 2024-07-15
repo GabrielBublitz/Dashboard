@@ -7,7 +7,15 @@
 }
 
 .dash-container .dash-container-title{
+    display: flex;
     font-size: 40px;
+    font-weight: 600;
+    color: var(--text-color);
+    align-items: center;
+}
+
+.dash-container .dash-container-status{
+    font-size: 20px;
     font-weight: 600;
     color: var(--text-color);
 }
@@ -30,4 +38,8 @@
 
 .card-container h2{
     color: var(--text-color);
+}
+
+.button-container{
+    text-align: center;
 }
