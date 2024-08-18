@@ -3,13 +3,20 @@ const React = require('react');
 const RenderContainter = ({ components }) => {
     return (
         <div className='dash-container'>
-            <h1 className='dash-container-title'>{ }</h1>
-            <div className="card-container padding-15">
-                {components.map((Component, index) => {
-                    return <Component.component key={index} data={Component.data} />;
-                })}
-            </div>
-        </div>);
+            {components && components.map((Component, index) => (
+                <div key={index}>
+                    <h1 className='dash-container-title'>{Component.name}</h1>
+                    <div className="card-container padding-15">
+
+                        {Component.data && Component.data.map((CollapsedCardItem, index) => (
+                            <Component.component key={index} data={CollapsedCardItem} />
+                        ))}
+
+                    </div>
+                </div>
+            ))}
+        </div>
+    );
 }
 
 export default RenderContainter;

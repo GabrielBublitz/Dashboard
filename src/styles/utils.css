@@ -1,0 +1,39 @@
+.padding-1 {
+    padding: var(--padding-5);
+}
+
+.padding-2 {
+    padding: var(--padding-10);
+}
+
+.padding-3 {
+    padding: var(--padding-15);
+}
+
+.gap-1 {
+    gap: var(--gap-1);
+}
+
+.items-end {
+    justify-content: end;
+}
+
+.col-1{
+    width: 20%;
+}
+
+.col-2{
+    width: 40%;
+}
+
+.col-3{
+    width: 60%;
+}
+
+.col-4{
+    width: 80%;
+}
+
+.col-5{
+    width: 100%;
+}

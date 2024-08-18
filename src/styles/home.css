@@ -14,6 +14,13 @@
     color: var(--text-color);
 }
 
+.title{
+    font-size: 36px;
+    font-weight: 500;
+    text-align: start;
+    color: var(--text-color);
+}
+
 .container-header{
     position: fixed;
     top: 0;
@@ -23,6 +30,7 @@
     transition: var(--tran-05);
     background-color: var(--body-color);
     padding: 10px 0px;
+    text-align: center;
 }
 
 .sidebar.close~.home .container-header{
@@ -48,9 +56,9 @@
 .card {
     display: flex;
     flex-direction: column;
-    width: 200px;
-    min-width: 170px;
-    height: 150px;
+    width: 150px;
+    min-width: 100px;
+    height: 135px;
     min-height: 135px;
     background-color: var(--primary-color-light);
     padding: var(--padding-10);
@@ -60,9 +68,20 @@
     transition: var(--tran-05);
 }
 
+.card-size-1{
+    height: 100px;
+}
+
+.card-size-2{
+    width: 100px;
+    min-width: 100px;
+    height: 100px;
+    min-height: 100px;
+}
+
 .card .title{
     width: 100%;
-    font-size: 20px;
+    font-size: var(--font-size-5);
     margin-bottom: 16px;
     font-weight: 600;
 }
@@ -73,5 +92,5 @@
     height: 100%;
     gap: 4px;
     flex-direction: column;
-    font-size: 18px;
+    font-size: var(--font-size-4);
 }

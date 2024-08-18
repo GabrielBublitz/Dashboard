@@ -6,6 +6,9 @@
 @import './styles/toast-message.css';
 @import './styles/status_card.css';
 @import './styles/json-editor.css';
+@import './styles/flex_props.css';
+@import './styles/container.css';
+@import './styles/utils.css';
 
 * {
 	font-family: 'Poppins', sans-serif;
@@ -49,18 +52,4 @@ body::-webkit-scrollbar-track {
 
 .test{
 	font-size: 20px;
-}
-
-.space-between {
-	display: flex;
-	justify-content: space-between;
-	width: 100%;
-}
-
-.baseline {
-	height: 100%;
-	display: flex;
-	flex-direction: column;
-	justify-content: flex-end;
-	align-items: flex-start;
 }
