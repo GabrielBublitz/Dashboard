@@ -12,25 +12,40 @@ const Home = () => {
     const { userConfig } = useData();
 
     const BuildComponents = () => {
-        var component = new CollapsedCardItem(
-            'Custodian',
-            'error',
-            (
-                <div className='stats'>
-                    <div className='baseline align-end'>
-                        <div className='white-text text-font'><b>1/2</b></div>
-                    </div>
-                </div>
-            )
-        );
+        var configs = [];
 
-        var data = new CollapsedInfo(
-            TestCard,
-            'Teste',
-            [component]
-        )
+        if (userConfig) {
+            userConfig.customers_services.forEach(element => {
 
-        var configs = [data, data];
+                var cards = [];
+
+                element.services_mw.forEach(service => {
+                    var card = new CollapsedCardItem(
+                        service.name,
+                        `${element.services_base_url}${service.port}${service.service_path}${service.servers[0]}`,
+                        `${element.services_base_url}${service.port}${service.service_path}${service.servers[1]}`,
+                        (
+                            <div className='stats'>
+                                <div className='baseline align-end'>
+                                    <div className='white-text text-font'><b>1/2</b></div>
+                                </div>
+                            </div>
+                        )
+                    );
+
+                    cards.push(card);
+                });
+
+                var data = new CollapsedInfo(
+                    TestCard,
+                    element.company,
+                    cards
+                );
+
+                configs.push(data);
+            });
+        }
+
         return configs;
     }
 
@@ -39,7 +54,7 @@ const Home = () => {
             <DataProvider>
                 <Header name={'Home'} updateData={true} />
                 <div className='container'>
-                    {userConfig && !userConfig.fullview ? (userConfig.customers_services.map((item, index) => (
+                    {userConfig && (!userConfig.fullview ? (userConfig.customers_services.map((item, index) => (
                         item.enable === true && (
                             <DashContainer key={index} name={item.company} base_url={item.services_base_url} services={item.services_mw} web_service={item.web_service} />
                         )
@@ -47,7 +62,7 @@ const Home = () => {
                     ) : (
                         <RenderContainer components={BuildComponents()} />
                     )
-                    }
+                    )}
                 </div>
             </DataProvider>
         </section>);

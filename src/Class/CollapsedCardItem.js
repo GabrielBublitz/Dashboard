@@ -1,8 +1,9 @@
 class CollapsedCardItem {
-    constructor(title, cardClass, visual) {
+    constructor(title, firstUrl, secondUrl, visual) {
         this.data = {
             title: title,
-            cardClass: cardClass,
+            firstUrl: firstUrl,
+            secondUrl: secondUrl,
             visual: visual
         };
     }
