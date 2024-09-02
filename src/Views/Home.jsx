@@ -16,33 +16,34 @@ const Home = () => {
 
         if (userConfig) {
             userConfig.customers_services.forEach(element => {
+                if (element.enable) {
+                    var cards = [];
 
-                var cards = [];
-
-                element.services_mw.forEach(service => {
-                    var card = new CollapsedCardItem(
-                        service.name,
-                        `${element.services_base_url}${service.port}${service.service_path}${service.servers[0]}`,
-                        `${element.services_base_url}${service.port}${service.service_path}${service.servers[1]}`,
-                        (
-                            <div className='stats'>
-                                <div className='baseline align-end'>
-                                    <div className='white-text text-font'><b>1/2</b></div>
+                    element.services_mw.forEach(service => {
+                        var card = new CollapsedCardItem(
+                            service.name,
+                            `${element.services_base_url}${service.port}${service.service_path}${service.servers[0]}`,
+                            `${element.services_base_url}${service.port}${service.service_path}${service.servers[1]}`,
+                            (
+                                <div className='stats'>
+                                    <div className='baseline align-end'>
+                                        <div className='white-text text-font'><b>1/2</b></div>
+                                    </div>
                                 </div>
-                            </div>
-                        )
+                            )
+                        );
+
+                        cards.push(card);
+                    });
+
+                    var data = new CollapsedInfo(
+                        TestCard,
+                        element.company,
+                        cards
                     );
 
-                    cards.push(card);
-                });
-
-                var data = new CollapsedInfo(
-                    TestCard,
-                    element.company,
-                    cards
-                );
-
-                configs.push(data);
+                    configs.push(data);
+                }
             });
         }
 
